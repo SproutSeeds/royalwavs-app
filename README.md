@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌊 RoyalWavs - Music Royalty Partnership Platform
 
-## Getting Started
+A revolutionary platform where artists and fans partner for mutual success through royalty sharing.
 
-First, run the development server:
+## 🚀 Quick Deploy
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Deploy to Vercel: https://vercel.com/import/project?template=https://github.com/SproutSeeds/royalwavs-app
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎵 Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Interactive Royalty Allocation Chart** with live projections
+- **X-Factor Scenarios** showing potential returns (up to 400% ROI)
+- **Audio File Upload System** with drag & drop
+- **Google OAuth Authentication**
+- **Tropical Luxury UI** with animations
+- **Real-time Calculations** for partnerships
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📊 What Users See
 
-## Learn More
+### Artist Flow:
+1. Upload audio files
+2. Set royalty split (20%-80%)
+3. See potential outcomes across 4 scenarios
+4. Launch partnership opportunities
 
-To learn more about Next.js, take a look at the following resources:
+### Fan Experience:
+- Discover rising artists
+- View investment scenarios
+- Partner with creators
+- Earn from streaming success
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔧 Environment Setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Create .env.local with your Google OAuth credentials from Google Cloud Console.
 
-## Deploy on Vercel
+## 🎯 Perfect for Tonight
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The platform is ready for sharing with friends and family - featuring beautiful interactive charts and real-time ROI calculations that make music investment tangible and exciting!
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with Next.js 14, TypeScript, Tailwind CSS, and Prisma.
