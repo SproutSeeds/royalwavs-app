@@ -9,7 +9,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -100,6 +100,7 @@ model Investment {
   songId String
   song   Song   @relation(fields: [songId], references: [id])
 
+  @@unique([songId, userId])
   @@map("investments")
 }
 
