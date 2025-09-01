@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { SongCard } from "@/components/SongCard"
 import { DemoFlowSection } from "@/components/DemoFlow"
 
@@ -153,7 +153,7 @@ export default function HomePage() {
                 
                 <div className="relative flex items-center space-x-4">
                   <span className="text-4xl group-hover:animate-bounce">✨</span>
-                  <span>Watch Sisy's Journey</span>
+                  <span>Watch Sisy&apos;s Journey</span>
                   <span className="text-4xl group-hover:animate-bounce" style={{ animationDelay: '0.2s' }}>🎵</span>
                 </div>
               </button>
@@ -193,7 +193,7 @@ export default function HomePage() {
             </div>
             <h2 className="text-3xl font-bold text-white mb-4">The Next Legends Await</h2>
             <p className="text-xl text-white/70 mb-8">
-              Partner with tomorrow's superstars before the world discovers them
+              Partner with tomorrow&apos;s superstars before the world discovers them
             </p>
             <div className="inline-block px-8 py-4 bg-gradient-to-r from-amber-500/20 to-cyan-500/20 rounded-xl backdrop-blur-sm border border-amber-400/30">
               <span className="text-amber-300 font-medium">Early Access: Rising Artists</span>
