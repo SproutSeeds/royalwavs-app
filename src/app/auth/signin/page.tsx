@@ -80,8 +80,13 @@ export default function SignInPage() {
                           <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                         </svg>
                       )}
+                      {provider.id === 'email' && (
+                        <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                      )}
                       <span className="text-lg font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">
-                        Continue with {provider.name}
+                        Continue with {provider.id === 'email' ? 'Email' : provider.name}
                       </span>
                       <div className="w-6 h-6 border-2 border-pink-400 rounded-full border-t-transparent animate-spin opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </div>
