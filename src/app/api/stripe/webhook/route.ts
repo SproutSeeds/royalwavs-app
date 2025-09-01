@@ -5,6 +5,14 @@ import { db } from "@/lib/db"
 import Stripe from "stripe"
 
 export async function POST(request: NextRequest) {
+  // Check if Stripe is configured
+  if (!stripe) {
+    return NextResponse.json(
+      { error: "Payment system not configured" },
+      { status: 503 }
+    )
+  }
+
   const body = await request.text()
   const signature = headers().get("stripe-signature")!
   
