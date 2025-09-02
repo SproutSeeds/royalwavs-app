@@ -21,7 +21,7 @@ export function Navigation() {
   }, [])
 
   return (
-    <nav className="bg-gradient-to-r from-black/30 via-teal-900/20 to-black/30 backdrop-blur-xl border-b border-amber-500/20">
+    <nav className="bg-gradient-to-r from-black/30 via-teal-900/20 to-black/30 backdrop-blur-xl border-b border-amber-500/20 relative z-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
@@ -93,7 +93,7 @@ export function Navigation() {
 
                 {/* Dropdown Menu */}
                 {dropdownOpen && (
-                  <div className="absolute right-0 top-full mt-3 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/60 py-1 z-[999] animate-[fadeIn_0.2s_ease-out] overflow-hidden">
+                  <div className="absolute right-0 top-full mt-3 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/60 py-1 z-[9999] animate-[fadeIn_0.2s_ease-out] overflow-hidden">
                     
                     {/* User Info Header */}
                     <div className="px-6 py-4 bg-gradient-to-r from-pink-50/80 to-amber-50/80 border-b border-amber-200/30">
