@@ -25,18 +25,34 @@ export function Navigation() {
     <nav className="bg-gradient-to-r from-black/30 via-teal-900/20 to-black/30 backdrop-blur-xl border-b border-amber-500/20 relative z-50">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 sm:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
-              <span className="text-slate-900 font-black text-lg">🌊</span>
+          
+          {/* Left Side - Mobile Hamburger Menu */}
+          <div className="flex items-center">
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
+              >
+                <div className="w-6 h-6 flex flex-col justify-center space-y-1">
+                  <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></div>
+                  <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></div>
+                  <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></div>
+                </div>
+              </button>
             </div>
-            <span className="text-xl sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
-              RoyalWavs
-            </span>
-          </Link>
+          </div>
 
-          {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center space-x-10">
+          {/* Centered Logo - Mobile and Desktop */}
+          <div className="flex-1 flex justify-center">
+            <Link href="/" className="flex items-center">
+              <span className="text-lg sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
+                RoyalWavs
+              </span>
+            </Link>
+          </div>
+
+          {/* Desktop Navigation Links - Positioned absolutely to not interfere with centering */}
+          <div className="hidden md:flex items-center space-x-10 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2">
             <Link href="/" className="text-white/90 hover:text-amber-300 transition-all duration-300 font-medium tracking-wide hover:scale-105">
               Discover
             </Link>
@@ -52,21 +68,7 @@ export function Navigation() {
             )}
           </div>
 
-          {/* Mobile Hamburger Menu */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
-            >
-              <div className="w-6 h-6 flex flex-col justify-center space-y-1">
-                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></div>
-                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></div>
-                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></div>
-              </div>
-            </button>
-          </div>
-
-          {/* Auth Section */}
+          {/* Right Side - Auth Section */}
           <div>
             {status === "loading" ? (
               <div className="w-24 h-10 bg-gradient-to-r from-amber-500/20 to-cyan-500/20 rounded-xl animate-pulse" />
