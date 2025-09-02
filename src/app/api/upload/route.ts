@@ -1,14 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth"
-import { writeFile } from "fs/promises"
-import path from "path"
 
 export async function POST(request: NextRequest) {
   try {
     console.log("File upload started...")
-    console.log("Request headers:", Object.fromEntries(request.headers.entries()))
-    console.log("Request cookies:", request.cookies.getAll())
     
     const session = await getServerSession(authOptions)
     console.log("Session result:", session)
@@ -47,38 +43,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "File too large. Maximum size is 200MB." }, { status: 400 })
     }
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-
     // Create unique filename
     const timestamp = Date.now()
-    const fileExtension = path.extname(file.name)
-    const fileName = `${userId.replace(/[^a-zA-Z0-9]/g, '_')}_${timestamp}${fileExtension}`
+    const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'mp3'
+    const fileName = `${userId.replace(/[^a-zA-Z0-9]/g, '_')}_${timestamp}.${fileExtension}`
     
-    // Save to uploads directory
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'audio')
-    const filePath = path.join(uploadDir, fileName)
+    // TODO: In production, upload to cloud storage (AWS S3, Google Cloud Storage, etc.)
+    // For now, return a mock response to avoid storing files locally
     
-    // Ensure upload directory exists
-    const fs = require('fs')
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true })
-    }
+    console.log("File upload simulated (not saved locally)")
+    console.log("In production, this would upload to cloud storage")
     
-    await writeFile(filePath, buffer)
-    console.log("File written successfully to:", filePath)
-    
-    // Return file information
+    // Return mock file information
     const result = {
       success: true,
       fileName: fileName,
       originalName: file.name,
       fileSize: file.size,
       mimeType: file.type,
-      fileUrl: `/uploads/audio/${fileName}`
+      fileUrl: `/api/mock-audio/${fileName}`, // Mock URL for development
+      message: "File upload simulated - in production this would use cloud storage"
     }
     
-    console.log("Upload successful, returning:", result)
+    console.log("Upload simulated successfully, returning:", result)
     return NextResponse.json(result)
 
   } catch (error) {
