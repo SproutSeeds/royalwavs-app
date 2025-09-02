@@ -23,10 +23,68 @@
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--gradient-secondary);
+  color: var(--text-primary);
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   overflow-x: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* UNIVERSAL THEME APPLICATION - ALL COMPONENTS */
+
+/* Base Elements */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary) !important;
+}
+
+p, span, div {
+  color: inherit;
+}
+
+/* Cards and Containers */
+[class*="bg-black"], 
+[class*="bg-slate"], 
+[class*="bg-gray"],
+[class*="backdrop-blur"] {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-primary) !important;
+}
+
+/* Navigation */
+nav {
+  background: var(--gradient-nav) !important;
+}
+
+/* Buttons */
+button {
+  transition: all 0.2s ease !important;
+}
+
+[class*="bg-gradient-to-r"]:not([class*="from-pink"]):not([class*="from-amber"]):not([class*="from-blue"]) {
+  background: var(--gradient-primary) !important;
+}
+
+/* Text Colors */
+[class*="text-white"] {
+  color: var(--text-primary) !important;
+}
+
+[class*="text-amber"], [class*="text-yellow"] {
+  color: var(--text-accent) !important;
+}
+
+[class*="text-cyan"], [class*="text-blue"] {
+  color: var(--text-accent-2) !important;
+}
+
+/* Borders */
+[class*="border-white"], [class*="border-gray"], [class*="border-slate"] {
+  border-color: var(--border-primary) !important;
+}
+
+[class*="border-amber"] {
+  border-color: var(--border-accent) !important;
 }
 
 /* Tropical Animation Keyframes */
@@ -419,39 +477,124 @@ body {
   color: #ffffff;
 }
 
-/* Theme System */
-/* Light theme */
+/* COMPREHENSIVE THEME SYSTEM - AFFECTS ALL COMPONENTS */
+
+/* Light Paradise Theme */
 html.theme-light {
+  /* Backgrounds */
   --bg-primary: #f8fafc;
   --bg-secondary: #f1f5f9;
+  --bg-tertiary: #e2e8f0;
   --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  --bg-nav: rgba(248, 250, 252, 0.95);
+  --bg-button: #f59e0b;
+  --bg-gradient: linear-gradient(to bottom right, #f8fafc, #e2e8f0, #cbd5e1);
+  --bg-button-hover: #d97706;
+  --bg-input: #ffffff;
+  
+  /* Text Colors */
   --text-primary: #1e293b;
   --text-secondary: #64748b;
-  --border-color: #e2e8f0;
-  --accent-primary: #f59e0b;
-  --accent-secondary: #06b6d4;
+  --text-tertiary: #94a3b8;
+  --text-accent: #f59e0b;
+  --text-accent-2: #06b6d4;
+  --text-white: #ffffff;
+  --text-black: #1e293b;
+  
+  /* Borders & Dividers */
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --border-accent: rgba(245, 158, 11, 0.3);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(30, 41, 59, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(30, 41, 59, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(30, 41, 59, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(30, 41, 59, 0.1);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #f59e0b, #06b6d4);
+  --gradient-secondary: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  --gradient-nav: linear-gradient(90deg, rgba(248, 250, 252, 0.3), rgba(241, 245, 249, 0.2), rgba(248, 250, 252, 0.3));
 }
 
-/* Medium theme */
+/* Medium Paradise Theme */
 html.theme-medium {
+  /* Backgrounds */
   --bg-primary: #374151;
   --bg-secondary: #4b5563;
+  --bg-tertiary: #1f2937;
   --bg-card: #6b7280;
+  --bg-card-hover: #4b5563;
+  --bg-nav: rgba(75, 85, 99, 0.95);
+  --bg-button: #fbbf24;
+  --bg-gradient: linear-gradient(to bottom right, #374151, #1f2937, #111827);
+  --bg-button-hover: #f59e0b;
+  --bg-input: #6b7280;
+  
+  /* Text Colors */
   --text-primary: #f3f4f6;
   --text-secondary: #d1d5db;
-  --border-color: #9ca3af;
-  --accent-primary: #fbbf24;
-  --accent-secondary: #10b981;
+  --text-tertiary: #9ca3af;
+  --text-accent: #fbbf24;
+  --text-accent-2: #10b981;
+  --text-white: #f3f4f6;
+  --text-black: #1f2937;
+  
+  /* Borders & Dividers */
+  --border-primary: #9ca3af;
+  --border-secondary: #6b7280;
+  --border-accent: rgba(251, 191, 36, 0.3);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #fbbf24, #10b981);
+  --gradient-secondary: linear-gradient(135deg, #374151, #1f2937);
+  --gradient-nav: linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(55, 65, 81, 0.2), rgba(0, 0, 0, 0.3));
 }
 
-/* Dark theme */
+/* Dark Paradise Theme */
 html.theme-dark {
+  /* Backgrounds */
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
+  --bg-tertiary: #1e1b4b;
   --bg-card: #334155;
+  --bg-card-hover: #1e293b;
+  --bg-nav: rgba(15, 23, 42, 0.95);
+  --bg-button: #06b6d4;
+  --bg-gradient: linear-gradient(to bottom right, #0f172a, #0d1b2a, #082f49);
+  --bg-button-hover: #0891b2;
+  --bg-input: #334155;
+  
+  /* Text Colors */
   --text-primary: #f1f5f9;
   --text-secondary: #cbd5e1;
-  --border-color: #475569;
-  --accent-primary: #06b6d4;
-  --accent-secondary: #f59e0b;
+  --text-tertiary: #94a3b8;
+  --text-accent: #06b6d4;
+  --text-accent-2: #f59e0b;
+  --text-white: #f1f5f9;
+  --text-black: #0f172a;
+  
+  /* Borders & Dividers */
+  --border-primary: #475569;
+  --border-secondary: #334155;
+  --border-accent: rgba(6, 182, 212, 0.3);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #06b6d4, #f59e0b);
+  --gradient-secondary: linear-gradient(135deg, #0f172a, #1e1b4b);
+  --gradient-nav: linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(6, 182, 212, 0.2), rgba(0, 0, 0, 0.3));
 }

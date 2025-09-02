@@ -1,38 +1,11 @@
 "use client"
 
 import { useSession } from "next-auth/react"
-import { useState, useEffect } from "react"
-
-type ThemeMode = 'light' | 'medium' | 'dark'
+import { useTheme } from "@/contexts/ThemeContext"
 
 export default function SettingsPage() {
   const { data: session, status } = useSession()
-  const [currentTheme, setCurrentTheme] = useState<ThemeMode>('dark')
-
-  // Load saved theme from localStorage
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('royalwavs-theme') as ThemeMode
-    if (savedTheme) {
-      setCurrentTheme(savedTheme)
-      applyTheme(savedTheme)
-    }
-  }, [])
-
-  const applyTheme = (theme: ThemeMode) => {
-    const html = document.documentElement
-    
-    // Remove all theme classes from html
-    html.classList.remove('theme-light', 'theme-medium', 'theme-dark')
-    
-    // Add the new theme class to html
-    html.classList.add(`theme-${theme}`)
-  }
-
-  const handleThemeChange = (theme: ThemeMode) => {
-    setCurrentTheme(theme)
-    applyTheme(theme)
-    localStorage.setItem('royalwavs-theme', theme)
-  }
+  const { theme, setTheme } = useTheme()
 
   if (status === "loading") {
     return (
@@ -72,9 +45,9 @@ export default function SettingsPage() {
           <div className="space-y-4">
             {/* Light Theme */}
             <button
-              onClick={() => handleThemeChange('light')}
+              onClick={() => setTheme('light')}
               className={`w-full p-6 rounded-xl border-2 transition-all duration-300 ${
-                currentTheme === 'light'
+                theme === 'light'
                   ? 'border-amber-400 bg-white/10'
                   : 'border-white/20 hover:border-white/40'
               }`}
@@ -85,7 +58,7 @@ export default function SettingsPage() {
                   <div className="text-lg font-bold text-white">Light Paradise</div>
                   <div className="text-sm text-white/70">Bright and clean</div>
                 </div>
-                {currentTheme === 'light' && (
+                {theme === 'light' && (
                   <div className="ml-auto text-amber-400">✓</div>
                 )}
               </div>
@@ -93,9 +66,9 @@ export default function SettingsPage() {
 
             {/* Medium Theme */}
             <button
-              onClick={() => handleThemeChange('medium')}
+              onClick={() => setTheme('medium')}
               className={`w-full p-6 rounded-xl border-2 transition-all duration-300 ${
-                currentTheme === 'medium'
+                theme === 'medium'
                   ? 'border-amber-400 bg-white/10'
                   : 'border-white/20 hover:border-white/40'
               }`}
@@ -106,7 +79,7 @@ export default function SettingsPage() {
                   <div className="text-lg font-bold text-white">Medium Paradise</div>
                   <div className="text-sm text-white/70">Balanced vibes</div>
                 </div>
-                {currentTheme === 'medium' && (
+                {theme === 'medium' && (
                   <div className="ml-auto text-amber-400">✓</div>
                 )}
               </div>
@@ -114,9 +87,9 @@ export default function SettingsPage() {
 
             {/* Dark Theme */}
             <button
-              onClick={() => handleThemeChange('dark')}
+              onClick={() => setTheme('dark')}
               className={`w-full p-6 rounded-xl border-2 transition-all duration-300 ${
-                currentTheme === 'dark'
+                theme === 'dark'
                   ? 'border-amber-400 bg-white/10'
                   : 'border-white/20 hover:border-white/40'
               }`}
@@ -127,7 +100,7 @@ export default function SettingsPage() {
                   <div className="text-lg font-bold text-white">Dark Paradise</div>
                   <div className="text-sm text-white/70">Deep and mysterious</div>
                 </div>
-                {currentTheme === 'dark' && (
+                {theme === 'dark' && (
                   <div className="ml-auto text-amber-400">✓</div>
                 )}
               </div>

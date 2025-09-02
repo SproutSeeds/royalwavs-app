@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { SessionProvider } from "@/components/providers/SessionProvider"
+import { ThemeProvider } from "@/contexts/ThemeContext"
 import { Navigation } from "@/components/Navigation"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -19,10 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider>
-          <div className="min-h-screen relative overflow-hidden">
+        <ThemeProvider>
+          <SessionProvider>
+            <div className="min-h-screen relative overflow-hidden">
             {/* Tropical Ocean Background */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-teal-900 to-cyan-900">
+            <div className="absolute inset-0" style={{background: 'var(--bg-gradient)'}}>
               {/* Ocean waves effect */}
               <div className="absolute inset-0 opacity-30">
                 <div className="absolute inset-0 bg-gradient-to-t from-transparent via-cyan-500/10 to-transparent animate-pulse"></div>
@@ -44,7 +46,8 @@ export default function RootLayout({
               </main>
             </div>
           </div>
-        </SessionProvider>
+          </SessionProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
