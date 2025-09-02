@@ -132,28 +132,28 @@ export default function UploadPage() {
 
   if (!session) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6">
+      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6">
         <div className="text-center max-w-md">
-          <div className="w-24 h-24 bg-gradient-to-br from-amber-400/20 to-cyan-400/20 rounded-full flex items-center justify-center mx-auto mb-8 border border-amber-400/30">
-            <span className="text-4xl">🎵</span>
+          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-amber-400/20 to-cyan-400/20 rounded-full flex items-center justify-center mx-auto mb-6 sm:mb-8 border border-amber-400/30">
+            <span className="text-3xl sm:text-4xl">🎵</span>
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4">
             <span className="bg-gradient-to-r from-amber-300 to-cyan-300 bg-clip-text text-transparent">
               Ready to Share Your Music?
             </span>
           </h1>
-          <p className="text-white/70 mb-8 text-lg">
+          <p className="text-white/70 mb-6 sm:mb-8 text-base sm:text-lg">
             Join RoyalWavs to upload your tracks and let fans partner with your success
           </p>
           <button
             onClick={() => window.location.href = '/api/auth/signin'}
-            className="group px-8 py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 hover:from-amber-600 hover:via-orange-600 hover:to-pink-600 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden"
+            className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 hover:from-amber-600 hover:via-orange-600 hover:to-pink-600 text-white rounded-2xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-            <div className="relative flex items-center space-x-3">
-              <span className="text-2xl group-hover:animate-bounce">🌴</span>
+            <div className="relative flex items-center space-x-2 sm:space-x-3">
+              <span className="text-xl sm:text-2xl group-hover:animate-bounce">🌴</span>
               <span>Enter Paradise</span>
-              <span className="text-2xl group-hover:animate-bounce" style={{ animationDelay: '0.2s' }}>✨</span>
+              <span className="text-xl sm:text-2xl group-hover:animate-bounce" style={{ animationDelay: '0.2s' }}>✨</span>
             </div>
           </button>
         </div>
@@ -162,33 +162,33 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-6">
+    <div className="min-h-screen pt-20 sm:pt-24 pb-12 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-black mb-6">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">
             <span className="bg-gradient-to-r from-amber-300 via-orange-400 to-pink-400 bg-clip-text text-transparent">
               Upload Your Track
             </span>
           </h1>
-          <p className="text-xl text-white/80 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto px-4">
             Share your music with the world and let partners join your success journey
           </p>
         </div>
 
         {/* Step Indicator */}
-        <div className="flex justify-center items-center space-x-8 mb-12">
+        <div className="flex justify-center items-center space-x-4 sm:space-x-6 md:space-x-8 mb-8 sm:mb-12 px-4">
           {[1, 2, 3].map((stepNum) => (
             <div key={stepNum} className="flex items-center">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
                 step >= stepNum 
                   ? 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/50 scale-110' 
                   : 'bg-gray-600/40'
               }`}>
-                <span className="text-white font-bold">{stepNum}</span>
+                <span className="text-white font-bold text-sm sm:text-base">{stepNum}</span>
               </div>
               {stepNum < 3 && (
-                <div className={`w-16 h-1 mx-4 transition-all duration-500 ${
+                <div className={`w-8 sm:w-12 md:w-16 h-1 mx-2 sm:mx-3 md:mx-4 transition-all duration-500 ${
                   step > stepNum ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-gray-600/40'
                 }`}></div>
               )}
@@ -201,8 +201,8 @@ export default function UploadPage() {
           {/* Step 1: Basic Info */}
           {step === 1 && (
             <div className="animate-fadeIn">
-              <div className="bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-3xl p-8 shadow-2xl shadow-amber-500/20">
-                <h2 className="text-3xl font-bold text-center mb-8 text-white">
+              <div className="bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-amber-500/20">
+                <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 text-white">
                   Tell Us About Your Track
                 </h2>
                 
@@ -332,8 +332,8 @@ export default function UploadPage() {
           {/* Step 3: Review & Submit */}
           {step === 3 && (
             <div className="animate-fadeIn">
-              <div className="bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-3xl p-8 shadow-2xl shadow-amber-500/20">
-                <h2 className="text-3xl font-bold text-center mb-8 text-white">
+              <div className="bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-amber-500/20">
+                <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 text-white">
                   Review Your Submission
                 </h2>
                 

@@ -76,35 +76,35 @@ export default function Dashboard() {
   )
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-white mb-2">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
           My Investments
         </h1>
-        <p className="text-white/70">
+        <p className="text-white/70 text-sm sm:text-base">
           Track your royalty investments and earnings
         </p>
       </div>
 
       {/* Stats Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-          <h3 className="text-white/70 text-sm mb-2">Total Invested</h3>
-          <p className="text-3xl font-bold text-white">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6">
+          <h3 className="text-white/70 text-xs sm:text-sm mb-2">Total Invested</h3>
+          <p className="text-2xl sm:text-3xl font-bold text-white">
             ${totalInvested.toFixed(2)}
           </p>
         </div>
         
-        <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-          <h3 className="text-white/70 text-sm mb-2">Total Earned</h3>
-          <p className="text-3xl font-bold text-green-400">
+        <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6">
+          <h3 className="text-white/70 text-xs sm:text-sm mb-2">Total Earned</h3>
+          <p className="text-2xl sm:text-3xl font-bold text-green-400">
             ${totalEarnings.toFixed(2)}
           </p>
         </div>
         
-        <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-          <h3 className="text-white/70 text-sm mb-2">Monthly Projected</h3>
-          <p className="text-3xl font-bold text-purple-400">
+        <div className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-6">
+          <h3 className="text-white/70 text-xs sm:text-sm mb-2">Monthly Projected</h3>
+          <p className="text-2xl sm:text-3xl font-bold text-purple-400">
             ${monthlyProjected.toFixed(2)}
           </p>
         </div>
