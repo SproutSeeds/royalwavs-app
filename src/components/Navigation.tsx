@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from "react"
 export function Navigation() {
   const { data: session, status } = useSession()
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   // Close dropdown when clicking outside
@@ -34,7 +35,7 @@ export function Navigation() {
             </span>
           </Link>
 
-          {/* Navigation Links */}
+          {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-10">
             <Link href="/" className="text-white/90 hover:text-amber-300 transition-all duration-300 font-medium tracking-wide hover:scale-105">
               Discover
@@ -49,6 +50,20 @@ export function Navigation() {
                 </Link>
               </>
             )}
+          </div>
+
+          {/* Mobile Hamburger Menu */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg text-white hover:bg-white/10 transition-colors duration-200"
+            >
+              <div className="w-6 h-6 flex flex-col justify-center space-y-1">
+                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></div>
+                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : ''}`}></div>
+                <div className={`w-full h-0.5 bg-white transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></div>
+              </div>
+            </button>
           </div>
 
           {/* Auth Section */}
@@ -207,6 +222,50 @@ export function Navigation() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-gradient-to-r from-black/40 via-teal-900/30 to-black/40 backdrop-blur-xl border-b border-amber-500/20">
+          <div className="px-4 py-4 space-y-3">
+            <Link 
+              href="/" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-3 px-4 text-white/90 hover:text-amber-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+            >
+              🏝️ Discover
+            </Link>
+            {session && (
+              <>
+                <Link 
+                  href="/dashboard" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-3 px-4 text-white/90 hover:text-cyan-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+                >
+                  🎵 Portfolio
+                </Link>
+                <Link 
+                  href="/upload" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block py-3 px-4 text-white/90 hover:text-emerald-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+                >
+                  🎤 Create
+                </Link>
+              </>
+            )}
+            {!session && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  signIn()
+                }}
+                className="w-full text-left py-3 px-4 text-white/90 hover:text-pink-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+              >
+                🌴 Enter Paradise
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   )
 }
