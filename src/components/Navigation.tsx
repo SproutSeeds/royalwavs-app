@@ -2,10 +2,12 @@
 
 import { useSession, signIn, signOut } from "next-auth/react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState, useRef, useEffect } from "react"
 
 export function Navigation() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -22,7 +24,7 @@ export function Navigation() {
   }, [])
 
   return (
-    <nav className="bg-gradient-to-r from-black/30 via-teal-900/20 to-black/30 backdrop-blur-xl border-b border-amber-500/20 relative z-50">
+    <nav className="bg-transparent border-b-0 relative z-50">
       <div className="w-full px-6 sm:px-8">
         <div className="flex items-center h-16 sm:h-20">
           
@@ -44,20 +46,20 @@ export function Navigation() {
             
             {/* Desktop Logo - Locked to Left */}
             <div className="hidden md:block">
-              <Link href="/" className="flex items-center group">
+              <button onClick={() => window.location.href = '/'} className="flex items-center group cursor-pointer">
                 <span className="text-2xl md:text-3xl lg:text-4xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight hover:drop-shadow-lg transition-all duration-500 hover:scale-105">
                   RoyalWavs
                 </span>
-              </Link>
+              </button>
             </div>
             
             {/* Mobile Logo - Centered on small screens */}
             <div className="md:hidden flex-1 flex justify-center">
-              <Link href="/" className="flex items-center group">
+              <button onClick={() => window.location.href = '/'} className="flex items-center group cursor-pointer">
                 <span className="text-lg sm:text-2xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight hover:drop-shadow-lg transition-all duration-500 hover:scale-105">
                   RoyalWavs
                 </span>
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -65,7 +67,10 @@ export function Navigation() {
           <div className="hidden md:flex flex-1 justify-center">
             <div className="flex items-center space-x-8 lg:space-x-12">
               <Link href="/" className="text-white/90 hover:text-amber-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
-                Discover
+                Home
+              </Link>
+              <Link href="/browse" className="text-white/90 hover:text-purple-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
+                Browse
               </Link>
               {session && (
                 <>
@@ -248,14 +253,21 @@ export function Navigation() {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-gradient-to-r from-black/40 via-teal-900/30 to-black/40 backdrop-blur-xl border-b border-amber-500/20">
+        <div className="md:hidden bg-black/40 backdrop-blur-xl border-b border-amber-500/20">
           <div className="px-4 py-4 space-y-3">
             <Link 
               href="/" 
               onClick={() => setMobileMenuOpen(false)}
               className="block py-3 px-4 text-white/90 hover:text-amber-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
             >
-              🏝️ Discover
+              🏝️ Home
+            </Link>
+            <Link 
+              href="/browse" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-3 px-4 text-white/90 hover:text-purple-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+            >
+              🎵 Browse Songs
             </Link>
             {session && (
               <>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { RoyaltyAllocationChart } from "@/components/RoyaltyAllocationChart"
@@ -19,7 +19,13 @@ export default function UploadPage() {
     totalRoyaltyPool: "",
   })
   const [audioFile, setAudioFile] = useState<File | null>(null)
+  const [uploadedFileInfo, setUploadedFileInfo] = useState<any>(null)
   const [isDragOver, setIsDragOver] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [isUploading, setIsUploading] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle')
+  const [titleCheckStatus, setTitleCheckStatus] = useState<'idle' | 'checking' | 'available' | 'taken'>('idle')
+  const [titleError, setTitleError] = useState('')
 
   const handleAllocationChange = (artist: number, publicShare: number) => {
     setArtistPercentage(artist)
@@ -34,13 +40,99 @@ export default function UploadPage() {
     if (step > 1) setStep(step - 1)
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!session) return
-
-    setLoading(true)
+  const uploadFile = async (file: File) => {
+    setIsUploading(true)
+    setUploadStatus('uploading')
+    setUploadProgress(0)
 
     try {
+      const formData = new FormData()
+      formData.append('audioFile', file)
+
+      // Simulate progress for now since fetch doesn't easily support upload progress
+      const progressInterval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 90) return prev
+          return prev + Math.random() * 10
+        })
+      }, 200)
+
+      console.log("Starting upload with fetch...")
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include' // This ensures cookies are sent
+      })
+
+      clearInterval(progressInterval)
+      setUploadProgress(100)
+
+      console.log("Upload response status:", response.status)
+      
+      if (!response.ok) {
+        try {
+          const error = await response.json()
+          console.error("Upload error:", error)
+          setUploadStatus('error')
+          setIsUploading(false)
+          throw new Error(error.error || `Upload failed with status ${response.status}`)
+        } catch (jsonError) {
+          console.error("Failed to parse error response:", jsonError)
+          console.error("Raw response:", await response.text())
+          setUploadStatus('error')
+          setIsUploading(false)
+          throw new Error(`Upload failed with status ${response.status}`)
+        }
+      }
+
+      const result = await response.json()
+      console.log("Upload successful:", result)
+      setUploadStatus('success')
+      setIsUploading(false)
+      return result
+
+    } catch (error) {
+      console.error("Upload failed:", error)
+      setUploadStatus('error')
+      setIsUploading(false)
+      throw error
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!session) {
+      alert("You must be signed in to upload songs")
+      return
+    }
+
+    setLoading(true)
+    console.log("Starting song submission process...")
+
+    try {
+      let fileInfo = uploadedFileInfo
+
+      // Upload file if not already uploaded
+      if (audioFile && !uploadedFileInfo) {
+        console.log("Uploading file first...")
+        fileInfo = await uploadFile(audioFile)
+        setUploadedFileInfo(fileInfo)
+        console.log("File uploaded:", fileInfo)
+      }
+
+      console.log("Creating song with data:", {
+        title: formData.title,
+        artistName: formData.artistName,
+        albumArtUrl: formData.albumArtUrl || undefined,
+        audioFileUrl: fileInfo?.fileUrl,
+        audioFileName: fileInfo?.originalName,
+        audioFileSize: fileInfo?.fileSize,
+        audioMimeType: fileInfo?.mimeType,
+        totalRoyaltyPool: 10000,
+        artistPercentage,
+        publicPercentage,
+      })
+
       const response = await fetch("/api/songs", {
         method: "POST",
         headers: {
@@ -50,47 +142,160 @@ export default function UploadPage() {
           title: formData.title,
           artistName: formData.artistName,
           albumArtUrl: formData.albumArtUrl || undefined,
+          audioFileUrl: fileInfo?.fileUrl,
+          audioFileName: fileInfo?.originalName,
+          audioFileSize: fileInfo?.fileSize,
+          audioMimeType: fileInfo?.mimeType,
           totalRoyaltyPool: 10000, // Default base for calculations
           artistPercentage,
           publicPercentage,
         }),
       })
 
+      console.log("Song creation response status:", response.status)
+      
       if (response.ok) {
         const song = await response.json()
-        router.push(`/song/${song.id}`)
+        console.log("Song created successfully:", song)
+        alert(`Song "${formData.title}" created successfully! Redirecting...`)
+        // For now, just redirect to dashboard since we don't have individual song pages yet
+        router.push("/dashboard")
       } else {
         const error = await response.json()
-        alert(error.error || "Failed to create song")
+        console.error("Song creation error:", error)
+        alert(`Failed to create song: ${error.error || "Unknown error"}`)
       }
     } catch (error) {
-      alert("Failed to create song")
+      console.error("Song submission error:", error)
+      alert(`Error during submission: ${error instanceof Error ? error.message : "Unknown error"}`)
     } finally {
       setLoading(false)
     }
   }
 
+  // Debounced function to check for duplicate song titles
+  const checkTitleAvailability = useCallback(
+    async (title: string) => {
+      if (!title.trim() || !session) {
+        setTitleCheckStatus('idle')
+        setTitleError('')
+        return
+      }
+
+      setTitleCheckStatus('checking')
+      setTitleError('')
+
+      try {
+        // First get all songs to check for duplicates (this would normally be a dedicated API endpoint)
+        const response = await fetch('/api/songs')
+        if (response.ok) {
+          const songs = await response.json()
+          const duplicateFound = songs.some((song: any) => 
+            song.title.toLowerCase() === title.toLowerCase() && 
+            song.artist?.id === session.user.id
+          )
+          
+          if (duplicateFound) {
+            setTitleCheckStatus('taken')
+            setTitleError(`You already have a song titled "${title}"`)
+          } else {
+            setTitleCheckStatus('available')
+            setTitleError('')
+          }
+        } else {
+          setTitleCheckStatus('idle')
+          setTitleError('')
+        }
+      } catch (error) {
+        setTitleCheckStatus('idle')
+        setTitleError('')
+      }
+    },
+    [session]
+  )
+
+  // Debounce the title check
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (formData.title) {
+        checkTitleAvailability(formData.title)
+      }
+    }, 800) // Wait 800ms after user stops typing
+
+    return () => clearTimeout(timeoutId)
+  }, [formData.title, checkTitleAvailability])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
-  }
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file && isValidAudioFile(file)) {
-      setAudioFile(file)
+    // Reset title check status when user starts typing
+    if (name === 'title') {
+      setTitleCheckStatus('idle')
+      setTitleError('')
     }
   }
 
-  const handleFileDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("File selected!")
+    console.log("Current session:", session)
+    console.log("Session status:", status)
+    
+    const file = e.target.files?.[0]
+    console.log("Selected file:", file ? { name: file.name, size: file.size, type: file.type } : "No file")
+    
+    if (!session) {
+      console.error("No session found - user not authenticated")
+      alert("Please sign in first to upload files")
+      return
+    }
+    
+    if (file && isValidAudioFile(file)) {
+      console.log("File is valid, starting auto-upload...")
+      console.log("User ID:", session.user?.id)
+      setAudioFile(file)
+      setUploadedFileInfo(null) // Reset upload info when new file selected
+      setUploadStatus('idle')
+      setUploadProgress(0)
+      
+      // Auto-upload the file
+      try {
+        console.log("Calling uploadFile...")
+        const result = await uploadFile(file)
+        console.log("Upload result:", result)
+        setUploadedFileInfo(result)
+      } catch (error) {
+        console.error('Auto-upload failed:', error)
+        // Error state is already handled in uploadFile function
+      }
+    } else if (file) {
+      console.log("File is invalid!")
+      alert("Please select a valid audio file (MP3, WAV, or FLAC, max 200MB)")
+    }
+  }
+
+  const handleFileDrop = async (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     setIsDragOver(false)
     
     const file = e.dataTransfer.files[0]
     if (file && isValidAudioFile(file)) {
       setAudioFile(file)
+      setUploadedFileInfo(null) // Reset upload info when new file selected
+      setUploadStatus('idle')
+      setUploadProgress(0)
+      
+      // Auto-upload the file
+      try {
+        const result = await uploadFile(file)
+        setUploadedFileInfo(result)
+      } catch (error) {
+        console.error('Auto-upload failed:', error)
+        // Error state is already handled in uploadFile function
+      }
     }
   }
 
@@ -109,7 +314,7 @@ export default function UploadPage() {
     const validExtensions = ['.mp3', '.wav', '.flac']
     const hasValidType = validTypes.includes(file.type)
     const hasValidExtension = validExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
-    const isValidSize = file.size <= 50 * 1024 * 1024 // 50MB
+    const isValidSize = file.size <= 200 * 1024 * 1024 // 200MB
     
     return (hasValidType || hasValidExtension) && isValidSize
   }
@@ -162,33 +367,33 @@ export default function UploadPage() {
   }
 
   return (
-    <div className="min-h-screen pt-20 sm:pt-24 pb-12 px-4 sm:px-6">
+    <div className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-8 sm:pb-12 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-3 sm:mb-4 md:mb-6 px-2">
             <span className="bg-gradient-to-r from-amber-300 via-orange-400 to-pink-400 bg-clip-text text-transparent">
               Upload Your Track
             </span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto px-4">
+          <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/80 max-w-2xl mx-auto px-4">
             Share your music with the world and let partners join your success journey
           </p>
         </div>
 
         {/* Step Indicator */}
-        <div className="flex justify-center items-center space-x-4 sm:space-x-6 md:space-x-8 mb-8 sm:mb-12 px-4">
+        <div className="flex justify-center items-center space-x-2 sm:space-x-4 md:space-x-6 lg:space-x-8 mb-6 sm:mb-8 md:mb-12 px-4">
           {[1, 2, 3].map((stepNum) => (
             <div key={stepNum} className="flex items-center">
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
                 step >= stepNum 
                   ? 'bg-gradient-to-br from-amber-500 to-orange-500 shadow-lg shadow-amber-500/50 scale-110' 
                   : 'bg-gray-600/40'
               }`}>
-                <span className="text-white font-bold text-sm sm:text-base">{stepNum}</span>
+                <span className="text-white font-bold text-xs sm:text-sm md:text-base">{stepNum}</span>
               </div>
               {stepNum < 3 && (
-                <div className={`w-8 sm:w-12 md:w-16 h-1 mx-2 sm:mx-3 md:mx-4 transition-all duration-500 ${
+                <div className={`w-6 sm:w-8 md:w-12 lg:w-16 h-0.5 sm:h-1 mx-1 sm:mx-2 md:mx-3 lg:mx-4 transition-all duration-500 ${
                   step > stepNum ? 'bg-gradient-to-r from-amber-500 to-orange-500' : 'bg-gray-600/40'
                 }`}></div>
               )}
@@ -201,32 +406,71 @@ export default function UploadPage() {
           {/* Step 1: Basic Info */}
           {step === 1 && (
             <div className="animate-fadeIn">
-              <div className="bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-amber-500/20">
-                <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 text-white">
+              <div className="bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-2xl shadow-amber-500/20">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-4 sm:mb-6 md:mb-8 text-white px-2">
                   Tell Us About Your Track
                 </h2>
                 
                 <div className="space-y-6 max-w-xl mx-auto">
                   <div>
-                    <label className="block text-white/80 text-sm font-medium mb-2">
+                    <label htmlFor="title" className="block text-white/80 text-sm font-medium mb-2">
                       Song Title
                     </label>
-                    <input
-                      type="text"
-                      name="title"
-                      value={formData.title}
-                      onChange={handleChange}
-                      placeholder="Enter your song title..."
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-400/50 focus:border-amber-400/50 transition-all duration-300"
-                      required
-                    />
+                    <div className="relative">
+                      <input
+                        id="title"
+                        type="text"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleChange}
+                        placeholder="Enter your song title..."
+                        className={`w-full px-4 py-3 pr-12 bg-white/10 border rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 transition-all duration-300 ${
+                          titleCheckStatus === 'taken' 
+                            ? 'border-red-400/50 focus:ring-red-400/50 focus:border-red-400/50' 
+                            : titleCheckStatus === 'available'
+                            ? 'border-emerald-400/50 focus:ring-emerald-400/50 focus:border-emerald-400/50'
+                            : 'border-white/20 focus:ring-amber-400/50 focus:border-amber-400/50'
+                        }`}
+                        required
+                      />
+                      
+                      {/* Status Indicator */}
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        {titleCheckStatus === 'checking' && (
+                          <div className="w-5 h-5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
+                        )}
+                        {titleCheckStatus === 'available' && (
+                          <div className="text-emerald-400 text-xl">✓</div>
+                        )}
+                        {titleCheckStatus === 'taken' && (
+                          <div className="text-red-400 text-xl">⚠</div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Error Message */}
+                    {titleError && (
+                      <p className="text-red-400 text-sm mt-2 flex items-center">
+                        <span className="mr-1">⚠</span>
+                        {titleError}
+                      </p>
+                    )}
+                    
+                    {/* Success Message */}
+                    {titleCheckStatus === 'available' && formData.title && (
+                      <p className="text-emerald-400 text-sm mt-2 flex items-center">
+                        <span className="mr-1">✓</span>
+                        Title is available!
+                      </p>
+                    )}
                   </div>
                   
                   <div>
-                    <label className="block text-white/80 text-sm font-medium mb-2">
+                    <label htmlFor="artistName" className="block text-white/80 text-sm font-medium mb-2">
                       Artist Name
                     </label>
                     <input
+                      id="artistName"
                       type="text"
                       name="artistName"
                       value={formData.artistName}
@@ -239,7 +483,7 @@ export default function UploadPage() {
 
                   {/* Audio File Upload */}
                   <div>
-                    <label className="block text-white/80 text-sm font-medium mb-2">
+                    <label htmlFor="audioFileInput" className="block text-white/80 text-sm font-medium mb-2">
                       Upload Audio File
                     </label>
                     <div 
@@ -268,20 +512,109 @@ export default function UploadPage() {
                       
                       {audioFile ? (
                         <div className="relative z-10">
-                          <div className="text-4xl mb-4 animate-bounce">🎵</div>
-                          <div className="text-emerald-300 font-bold text-lg mb-2">{audioFile.name}</div>
-                          <div className="text-white/60 text-sm mb-4">
-                            {formatFileSize(audioFile.size)} • Ready to upload
-                          </div>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setAudioFile(null)
-                            }}
-                            className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg text-sm transition-all duration-300 hover:scale-105"
-                          >
-                            Remove File
-                          </button>
+                          {isUploading ? (
+                            <div className="text-center">
+                              <div className="text-4xl mb-4 animate-pulse">📤</div>
+                              <div className="text-amber-300 font-bold text-lg mb-2">Uploading...</div>
+                              <div className="text-white/60 text-sm mb-4">{audioFile.name}</div>
+                              
+                              {/* Progress Bar */}
+                              <div className="w-full bg-gray-700/30 rounded-full h-3 mb-4 overflow-hidden">
+                                <div 
+                                  className="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 rounded-full transition-all duration-300 ease-out"
+                                  style={{ width: `${uploadProgress}%` }}
+                                ></div>
+                              </div>
+                              
+                              <div className="text-white/80 text-sm font-medium mb-2">
+                                {uploadProgress}% Complete
+                              </div>
+                              
+                              <div className="text-white/60 text-xs">
+                                {formatFileSize(audioFile.size)} • Uploading to server...
+                              </div>
+                            </div>
+                          ) : uploadStatus === 'success' && uploadedFileInfo ? (
+                            <div className="text-center">
+                              <div className="text-4xl mb-4">✅</div>
+                              <div className="text-emerald-300 font-bold text-lg mb-2">Upload Complete!</div>
+                              <div className="text-white/60 text-sm mb-4">{audioFile.name}</div>
+                              <div className="text-emerald-400/80 text-sm mb-4">
+                                {formatFileSize(audioFile.size)} • Ready for submission
+                              </div>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setAudioFile(null)
+                                  setUploadedFileInfo(null)
+                                  setUploadStatus('idle')
+                                  setUploadProgress(0)
+                                }}
+                                className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg text-sm transition-all duration-300 hover:scale-105"
+                              >
+                                Remove File
+                              </button>
+                            </div>
+                          ) : uploadStatus === 'error' ? (
+                            <div className="text-center">
+                              <div className="text-4xl mb-4">❌</div>
+                              <div className="text-red-300 font-bold text-lg mb-2">Upload Failed</div>
+                              <div className="text-white/60 text-sm mb-4">{audioFile.name}</div>
+                              <div className="text-red-400/80 text-sm mb-4">
+                                Please try again or choose a different file
+                              </div>
+                              <div className="flex gap-2 justify-center">
+                                <button
+                                  onClick={async (e) => {
+                                    e.stopPropagation()
+                                    if (audioFile) {
+                                      try {
+                                        const result = await uploadFile(audioFile)
+                                        setUploadedFileInfo(result)
+                                      } catch (error) {
+                                        console.error('Upload retry failed:', error)
+                                      }
+                                    }
+                                  }}
+                                  className="px-4 py-2 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-sm transition-all duration-300 hover:scale-105"
+                                >
+                                  Retry Upload
+                                </button>
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    setAudioFile(null)
+                                    setUploadedFileInfo(null)
+                                    setUploadStatus('idle')
+                                    setUploadProgress(0)
+                                  }}
+                                  className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg text-sm transition-all duration-300 hover:scale-105"
+                                >
+                                  Remove File
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-center">
+                              <div className="text-4xl mb-4 animate-bounce">🎵</div>
+                              <div className="text-emerald-300 font-bold text-lg mb-2">{audioFile.name}</div>
+                              <div className="text-white/60 text-sm mb-4">
+                                {formatFileSize(audioFile.size)} • Ready to upload
+                              </div>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setAudioFile(null)
+                                  setUploadedFileInfo(null)
+                                  setUploadStatus('idle')
+                                  setUploadProgress(0)
+                                }}
+                                className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-300 rounded-lg text-sm transition-all duration-300 hover:scale-105"
+                              >
+                                Remove File
+                              </button>
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <div className="relative z-10">
@@ -293,7 +626,7 @@ export default function UploadPage() {
                           </div>
                           <div className="text-white/50 text-sm mb-4">or click to browse</div>
                           <div className="text-white/40 text-xs">
-                            Supports MP3, WAV, FLAC up to 50MB
+                            Supports MP3, WAV, FLAC up to 200MB
                           </div>
                         </div>
                       )}
@@ -301,10 +634,11 @@ export default function UploadPage() {
                   </div>
 
                   <div>
-                    <label className="block text-white/80 text-sm font-medium mb-2">
+                    <label htmlFor="albumArtUrl" className="block text-white/80 text-sm font-medium mb-2">
                       Album Art URL (Optional)
                     </label>
                     <input
+                      id="albumArtUrl"
                       type="url"
                       name="albumArtUrl"
                       value={formData.albumArtUrl}
@@ -380,7 +714,19 @@ export default function UploadPage() {
 
                   {/* Submit Button */}
                   <button
-                    onClick={handleSubmit}
+                    type="button"
+                    onClick={(e) => {
+                      console.log("Submit button clicked!")
+                      console.log("Button state:", { 
+                        loading, 
+                        session: !!session,
+                        title: formData.title,
+                        artistName: formData.artistName,
+                        audioFile: !!audioFile,
+                        uploadedFileInfo: !!uploadedFileInfo
+                      })
+                      handleSubmit(e)
+                    }}
                     disabled={loading}
                     className="w-full group relative px-8 py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 hover:from-amber-600 hover:via-orange-600 hover:to-pink-600 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -425,10 +771,13 @@ export default function UploadPage() {
           {step < 3 ? (
             <button
               onClick={handleNext}
-              disabled={step === 1 && (!formData.title || !formData.artistName || !audioFile)}
+              disabled={
+                step === 1 && 
+                (!formData.title || !formData.artistName || !audioFile || isUploading || uploadStatus === 'error' || titleCheckStatus === 'taken' || titleCheckStatus === 'checking')
+              }
               className="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white rounded-xl font-medium transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Next →
+              {isUploading ? 'Uploading...' : 'Next →'}
             </button>
           ) : (
             <div className="w-20"></div> // Spacer

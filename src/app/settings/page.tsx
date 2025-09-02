@@ -25,41 +25,41 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-12 px-4">
+    <div className="min-h-screen pt-16 sm:pt-20 md:pt-24 pb-8 sm:pb-12 px-4 sm:px-6">
       <div className="max-w-2xl mx-auto">
         
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-black mb-4 bg-gradient-to-r from-amber-300 to-cyan-300 bg-clip-text text-transparent">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black mb-3 sm:mb-4 bg-gradient-to-r from-amber-300 to-cyan-300 bg-clip-text text-transparent px-2">
             Settings
           </h1>
-          <p className="text-lg text-white/70">
+          <p className="text-base sm:text-lg text-white/70">
             Choose your paradise theme
           </p>
         </div>
 
         {/* Theme Selection - Simple Cards */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-white mb-6">Theme</h2>
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6">Theme</h2>
           
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {/* Light Theme */}
             <button
               onClick={() => setTheme('light')}
-              className={`w-full p-6 rounded-xl border-2 transition-all duration-300 ${
+              className={`w-full p-4 sm:p-6 rounded-lg sm:rounded-xl border-2 transition-all duration-300 ${
                 theme === 'light'
                   ? 'border-amber-400 bg-white/10'
                   : 'border-white/20 hover:border-white/40'
               }`}
             >
-              <div className="flex items-center space-x-4">
-                <div className="text-3xl">🌅</div>
-                <div className="text-left">
-                  <div className="text-lg font-bold text-white">Light Paradise</div>
-                  <div className="text-sm text-white/70">Bright and clean</div>
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <div className="text-2xl sm:text-3xl">🌅</div>
+                <div className="text-left flex-1">
+                  <div className="text-base sm:text-lg font-bold text-white">Light Paradise</div>
+                  <div className="text-xs sm:text-sm text-white/70">Bright and clean</div>
                 </div>
                 {theme === 'light' && (
-                  <div className="ml-auto text-amber-400">✓</div>
+                  <div className="text-amber-400 text-lg sm:text-xl">✓</div>
                 )}
               </div>
             </button>
@@ -67,20 +67,20 @@ export default function SettingsPage() {
             {/* Medium Theme */}
             <button
               onClick={() => setTheme('medium')}
-              className={`w-full p-6 rounded-xl border-2 transition-all duration-300 ${
+              className={`w-full p-4 sm:p-6 rounded-lg sm:rounded-xl border-2 transition-all duration-300 ${
                 theme === 'medium'
                   ? 'border-amber-400 bg-white/10'
                   : 'border-white/20 hover:border-white/40'
               }`}
             >
-              <div className="flex items-center space-x-4">
-                <div className="text-3xl">🌇</div>
-                <div className="text-left">
-                  <div className="text-lg font-bold text-white">Medium Paradise</div>
-                  <div className="text-sm text-white/70">Balanced vibes</div>
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <div className="text-2xl sm:text-3xl">🌇</div>
+                <div className="text-left flex-1">
+                  <div className="text-base sm:text-lg font-bold text-white">Medium Paradise</div>
+                  <div className="text-xs sm:text-sm text-white/70">Balanced vibes</div>
                 </div>
                 {theme === 'medium' && (
-                  <div className="ml-auto text-amber-400">✓</div>
+                  <div className="text-amber-400 text-lg sm:text-xl">✓</div>
                 )}
               </div>
             </button>
@@ -88,20 +88,20 @@ export default function SettingsPage() {
             {/* Dark Theme */}
             <button
               onClick={() => setTheme('dark')}
-              className={`w-full p-6 rounded-xl border-2 transition-all duration-300 ${
+              className={`w-full p-4 sm:p-6 rounded-lg sm:rounded-xl border-2 transition-all duration-300 ${
                 theme === 'dark'
                   ? 'border-amber-400 bg-white/10'
                   : 'border-white/20 hover:border-white/40'
               }`}
             >
-              <div className="flex items-center space-x-4">
-                <div className="text-3xl">🌙</div>
-                <div className="text-left">
-                  <div className="text-lg font-bold text-white">Dark Paradise</div>
-                  <div className="text-sm text-white/70">Deep and mysterious</div>
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <div className="text-2xl sm:text-3xl">🌙</div>
+                <div className="text-left flex-1">
+                  <div className="text-base sm:text-lg font-bold text-white">Dark Paradise</div>
+                  <div className="text-xs sm:text-sm text-white/70">Deep and mysterious</div>
                 </div>
                 {theme === 'dark' && (
-                  <div className="ml-auto text-amber-400">✓</div>
+                  <div className="text-amber-400 text-lg sm:text-xl">✓</div>
                 )}
               </div>
             </button>

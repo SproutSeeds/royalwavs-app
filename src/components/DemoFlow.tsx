@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useSession, signIn } from "next-auth/react"
 
 const demoSteps = [
   {
@@ -66,8 +68,14 @@ export function DemoFlowSection({ showPhysics = false }: DemoFlowSectionProps) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [physicsStarted, setPhysicsStarted] = useState(false)
   const [isPaused, setIsPaused] = useState(false)
+  const router = useRouter()
+  const { data: session } = useSession()
 
   const currentStep = demoSteps.find(step => step.id === activeStep) || demoSteps[0]
+
+  const handleCollectClick = () => {
+    window.location.href = '/'
+  }
 
   // Trigger physics animations when showPhysics becomes true
   useEffect(() => {
@@ -141,8 +149,8 @@ export function DemoFlowSection({ showPhysics = false }: DemoFlowSectionProps) {
   return (
     <div className="mb-20">
       {/* Section Header */}
-      <div className={`text-center mb-16 ${showPhysics && physicsStarted ? 'animate-fall-bounce' : showPhysics ? 'opacity-0' : ''}`}>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 px-4">
+      <div className={`text-center mb-16 mt-20 ${showPhysics && physicsStarted ? 'animate-fall-bounce' : showPhysics ? 'opacity-0' : ''}`}>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 px-4 mt-16">
           <span className="bg-gradient-to-r from-amber-300 to-cyan-300 bg-clip-text text-transparent">
             Sisy's Journey
           </span>
@@ -343,7 +351,10 @@ export function DemoFlowSection({ showPhysics = false }: DemoFlowSectionProps) {
               
               {/* Pokemon Card Style CTA */}
               <div className="max-w-md mx-auto">
-                <button className="group relative w-full px-8 py-6 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 hover:from-blue-500/30 hover:via-purple-500/30 hover:to-pink-500/30 backdrop-blur-xl border-2 border-blue-400/40 hover:border-blue-300/60 text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-105 overflow-hidden">
+                <button 
+                  onClick={handleCollectClick}
+                  className="group relative w-full px-8 py-6 bg-gradient-to-br from-blue-600/20 via-purple-600/20 to-pink-600/20 hover:from-blue-500/30 hover:via-purple-500/30 hover:to-pink-500/30 backdrop-blur-xl border-2 border-blue-400/40 hover:border-blue-300/60 text-white rounded-xl font-bold text-lg shadow-xl hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 hover:scale-105 overflow-hidden"
+                >
                   {/* Holographic shimmer effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
                   

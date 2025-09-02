@@ -72,6 +72,10 @@ model Song {
   title            String
   artistName       String
   albumArtUrl      String?
+  audioFileUrl     String?
+  audioFileName    String?
+  audioFileSize    Int?
+  audioMimeType    String?
   totalRoyaltyPool Float
   monthlyRevenue   Float    @default(0)
   isActive         Boolean  @default(true)

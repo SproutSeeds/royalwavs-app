@@ -1,32 +1,25 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { SongCard } from "@/components/SongCard"
 import { DemoFlowSection } from "@/components/DemoFlow"
 
-type Song = {
-  id: string
-  title: string
-  artistName: string
-  albumArtUrl?: string
-  totalRoyaltyPool: number
-  monthlyRevenue: number
-  investments: Array<{
-    amountInvested: number
-    royaltyPercentage: number
-  }>
-}
-
 export default function HomePage() {
-  const [songs, setSongs] = useState<Song[]>([])
-  const [loading, setLoading] = useState(true)
   const [showMaya, setShowMaya] = useState(false)
   const [showDemo, setShowDemo] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [buttonPoofing, setButtonPoofing] = useState(false)
 
   useEffect(() => {
-    fetchSongs()
+    // Check if we need to reset (from RoyalWavs click)
+    const urlParams = new URLSearchParams(window.location.search)
+    if (urlParams.get('reset') === 'true') {
+      setShowMaya(false)
+      setShowDemo(false)
+      setIsTransitioning(false)
+      setButtonPoofing(false)
+      // Clean up the URL
+      window.history.replaceState({}, document.title, '/')
+    }
   }, [])
 
   const handleHeroClick = () => {
@@ -51,39 +44,19 @@ export default function HomePage() {
     }, 1200) // Wait for smoke animation to complete
   }
 
-  const fetchSongs = async () => {
-    try {
-      const response = await fetch("/api/songs")
-      if (response.ok) {
-        const data = await response.json()
-        setSongs(data)
-      }
-    } catch (error) {
-      console.error("Failed to fetch songs:", error)
-    } finally {
-      setLoading(false)
-    }
+  const resetToHero = () => {
+    setShowMaya(false)
+    setShowDemo(false)
+    setIsTransitioning(false)
+    setButtonPoofing(false)
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="relative">
-          <div className="w-16 h-16 rounded-full border-4 border-amber-500/30 border-t-amber-400 animate-spin"></div>
-          <div className="absolute inset-0 w-16 h-16 rounded-full border-4 border-cyan-500/20 border-b-cyan-400 animate-spin animate-reverse"></div>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="max-w-7xl mx-auto relative">
-      {/* Hero Section - Clickable with shimmer effects */}
+      {/* Hero Section with Action Buttons */}
       {!showMaya && !showDemo && (
-        <div 
-          onClick={handleHeroClick}
-          className={`min-h-screen flex items-center justify-center text-center relative cursor-pointer transition-all duration-800 ${isTransitioning ? 'animate-fade-out' : ''}`}
-        >
+        <div className={`min-h-screen flex items-center justify-center text-center relative transition-all duration-800 ${isTransitioning ? 'animate-fade-out' : ''}`}>
           {/* Floating golden elements */}
           <div className="absolute left-1/4 top-1/3 w-2 h-2 bg-amber-400 rounded-full animate-pulse opacity-60"></div>
           <div className="absolute right-1/3 top-1/2 w-1 h-1 bg-cyan-300 rounded-full animate-ping opacity-40"></div>
@@ -95,7 +68,7 @@ export default function HomePage() {
                 Build Artists
               </span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-300 via-teal-400 to-emerald-400 bg-clip-text text-transparent text-shimmer">
+              <span className="text-white text-sparkle">
                 Share Success
               </span>
             </h1>
@@ -108,22 +81,49 @@ export default function HomePage() {
               <span className="text-shimmer">{" "}— when they succeed, you succeed together</span>
             </p>
             
-            <p className="text-base sm:text-lg md:text-xl text-cyan-200/80 max-w-3xl mx-auto font-light mb-20 text-shimmer px-4">
+            <p className="text-base sm:text-lg md:text-xl text-cyan-200/80 max-w-3xl mx-auto font-light mb-12 text-shimmer px-4">
               Be part of their journey from the beginning — Like owning stock in the next music legend
             </p>
 
-            {/* Click indicator */}
-            <div className="flex flex-col items-center space-y-2 text-amber-300/80 animate-bounce">
-              <span className="text-sm font-medium text-shimmer">Click anywhere to continue</span>
-              <div className="w-3 h-3 bg-amber-400 rounded-full animate-pulse"></div>
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-8">
+              {/* Browse Songs Button - Primary */}
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <button 
+                  onClick={() => window.location.href = '/browse'}
+                  className="relative px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 text-white font-bold text-xl rounded-2xl leading-none flex items-center space-x-3 hover:scale-105 transition-all duration-300">
+                  <span className="text-2xl">💎</span>
+                  <span>Browse Songs</span>
+                  <span className="text-2xl">🎵</span>
+                </button>
+              </div>
+
+              {/* Upload Music Button - Secondary */}
+              <button 
+                onClick={() => window.location.href = '/upload'}
+                className="group px-8 py-4 bg-gradient-to-r from-emerald-600/20 via-teal-600/20 to-green-600/20 hover:from-emerald-600/40 hover:via-teal-600/40 hover:to-green-600/40 backdrop-blur-xl border-2 border-emerald-400/40 hover:border-emerald-300/60 text-white rounded-2xl font-bold text-xl transition-all duration-300 hover:scale-105 flex items-center space-x-3"
+              >
+                <span className="text-2xl group-hover:animate-bounce">🎤</span>
+                <span>Upload Music</span>
+                <span className="text-2xl group-hover:animate-bounce" style={{ animationDelay: '0.2s' }}>✨</span>
+              </button>
             </div>
+
+            {/* Demo Link */}
+            <button 
+              onClick={handleHeroClick}
+              className="text-amber-300/80 hover:text-amber-300 transition-colors text-sm font-medium underline underline-offset-4"
+            >
+              Or watch how it works with Sisy's story →
+            </button>
           </div>
         </div>
       )}
 
       {/* Sisy Section */}
       {showMaya && !showDemo && (
-        <div className={`min-h-screen flex items-start justify-center pt-32 relative ${isTransitioning ? 'animate-fade-out' : 'animate-fadeIn'}`}>
+        <div className={`min-h-screen flex items-center justify-center relative ${isTransitioning ? 'animate-fade-out' : 'animate-fadeIn'}`}>
           <div className="text-center w-full px-4">
             <div className="mb-12">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-8">
@@ -183,36 +183,6 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* Songs Grid */}
-      {songs.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="max-w-md mx-auto">
-            <div className="w-24 h-24 bg-gradient-to-br from-amber-400/20 to-cyan-400/20 rounded-full flex items-center justify-center mx-auto mb-8 border border-amber-400/30">
-              <span className="text-4xl">👑</span>
-            </div>
-            <h2 className="text-3xl font-bold text-white mb-4">The Next Legends Await</h2>
-            <p className="text-xl text-white/70 mb-8">
-              Partner with tomorrow&apos;s superstars before the world discovers them
-            </p>
-            <div className="inline-block px-8 py-4 bg-gradient-to-r from-amber-500/20 to-cyan-500/20 rounded-xl backdrop-blur-sm border border-amber-400/30">
-              <span className="text-amber-300 font-medium">Early Access: Rising Artists</span>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <h2 className="text-4xl font-bold text-center mb-12">
-            <span className="bg-gradient-to-r from-amber-300 to-cyan-300 bg-clip-text text-transparent">
-              Partner With Rising Stars
-            </span>
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {songs.map((song) => (
-              <SongCard key={song.id} song={song} />
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   )
 }

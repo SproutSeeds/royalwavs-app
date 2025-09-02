@@ -15,23 +15,20 @@ export default function SignInPage() {
   }, [])
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-white via-pink-50 to-amber-50">
-      {/* Animated Dripping Paint Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Paint Drips */}
-        <div className="absolute top-0 left-1/4 w-2 bg-gradient-to-b from-pink-400 to-transparent h-32 animate-drip opacity-70 rounded-full"></div>
-        <div className="absolute top-0 left-1/2 w-3 bg-gradient-to-b from-amber-400 to-transparent h-48 animate-drip-slow opacity-60 rounded-full" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-0 right-1/3 w-1.5 bg-gradient-to-b from-rose-300 to-transparent h-40 animate-drip opacity-80 rounded-full" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-0 right-1/4 w-2.5 bg-gradient-to-b from-orange-400 to-transparent h-36 animate-drip-slow opacity-50 rounded-full" style={{ animationDelay: '0.5s' }}></div>
-        <div className="absolute top-0 left-3/4 w-1 bg-gradient-to-b from-pink-500 to-transparent h-28 animate-drip opacity-70 rounded-full" style={{ animationDelay: '1.5s' }}></div>
+    <div className="relative min-h-screen">
+      {/* Additional Sign-in Page Effects (layered on top of main background) */}
+      <div className="absolute inset-0">
+        {/* Extra Gradient Orbs for Sign-in */}
+        <div className="absolute top-1/6 right-1/3 w-72 h-72 bg-gradient-to-br from-purple-500/12 to-pink-500/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute bottom-1/6 left-1/3 w-56 h-56 bg-gradient-to-br from-orange-500/10 to-amber-500/5 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
         
-        {/* Floating Paint Drops */}
-        <div className="absolute top-20 left-1/3 w-3 h-3 bg-pink-400 rounded-full animate-float opacity-60"></div>
-        <div className="absolute top-32 right-1/4 w-2 h-2 bg-amber-400 rounded-full animate-float-slow opacity-50" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-24 left-2/3 w-2.5 h-2.5 bg-rose-300 rounded-full animate-float opacity-70" style={{ animationDelay: '1s' }}></div>
+        {/* Floating Sparkles */}
+        <div className="absolute top-24 right-1/4 w-2 h-2 bg-amber-300/70 rounded-full animate-float" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute top-40 left-1/4 w-3 h-3 bg-pink-300/60 rounded-full animate-float-slow" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-40 right-1/3 w-1.5 h-1.5 bg-teal-300/80 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-60 left-1/2 w-2.5 h-2.5 bg-orange-300/50 rounded-full animate-float-slow" style={{ animationDelay: '0.8s' }}></div>
       </div>
-
-      {/* Main Content */}
+      
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
         <div className="max-w-md w-full">
           {/* Logo */}
@@ -44,21 +41,21 @@ export default function SignInPage() {
                 RoyalWavs
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
               Welcome to Paradise
             </h1>
-            <p className="text-base sm:text-lg text-gray-600">
+            <p className="text-base sm:text-lg text-white/80">
               Sign in to invest in the future of music
             </p>
           </div>
 
           {/* Sign In Card */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-6 sm:p-8 relative overflow-hidden">
+          <div className="bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-amber-500/30 p-6 sm:p-8 relative overflow-hidden">
             {/* Card Background Animation */}
-            <div className="absolute inset-0 bg-gradient-to-br from-pink-100/50 via-white/50 to-amber-100/50 animate-pulse opacity-50"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-900/30 via-slate-800/50 to-amber-900/30 animate-pulse opacity-50"></div>
             
             <div className="relative z-10">
-              <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
+              <h2 className="text-2xl font-bold text-center text-white mb-8">
                 Choose Your Gateway
               </h2>
 
@@ -66,10 +63,10 @@ export default function SignInPage() {
                 <div key={provider.name} className="mb-4">
                   <button
                     onClick={() => signIn(provider.id, { callbackUrl: '/' })}
-                    className="w-full group relative overflow-hidden bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-pink-300 rounded-2xl px-8 py-4 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-pink-500/20"
+                    className="w-full group relative overflow-hidden bg-slate-700/50 hover:bg-slate-600/50 border-2 border-amber-500/30 hover:border-amber-400/60 rounded-2xl px-8 py-4 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-amber-500/20"
                   >
                     {/* Button Background Animation */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-pink-400/10 via-amber-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-400/10 via-orange-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     
                     <div className="relative flex items-center justify-center space-x-4">
                       {provider.id === 'google' && (
@@ -85,17 +82,17 @@ export default function SignInPage() {
                           <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                         </svg>
                       )}
-                      <span className="text-lg font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">
+                      <span className="text-lg font-semibold text-white group-hover:text-amber-300 transition-colors">
                         Continue with {provider.id === 'email' ? 'Email' : provider.name}
                       </span>
-                      <div className="w-6 h-6 border-2 border-pink-400 rounded-full border-t-transparent animate-spin opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <div className="w-6 h-6 border-2 border-amber-400 rounded-full border-t-transparent animate-spin opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </div>
                   </button>
                 </div>
               ))}
 
               <div className="mt-8 text-center">
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-white/60">
                   By signing in, you agree to experience the luxury of music investment
                 </p>
               </div>
@@ -104,16 +101,14 @@ export default function SignInPage() {
 
           {/* Bottom Decoration */}
           <div className="text-center mt-8">
-            <div className="flex items-center justify-center space-x-2 text-gray-400">
-              <div className="w-2 h-2 bg-pink-300 rounded-full animate-pulse"></div>
+            <div className="flex items-center justify-center space-x-2 text-white/60">
+              <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
               <span className="text-sm font-medium">Secure • Beautiful • Exclusive</span>
-              <div className="w-2 h-2 bg-amber-300 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Additional CSS in globals.css will handle the drip animations */}
     </div>
   )
 }
