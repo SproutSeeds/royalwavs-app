@@ -2,89 +2,138 @@
 
 import { useSession } from "next-auth/react"
 import { useState, useEffect } from "react"
-import { HexColorPicker } from "react-colorful"
 
-interface ThemeColors {
-  primary: string
-  secondary: string
-  accent: string
-  background: string
+type ThemeMode = 'light' | 'medium' | 'dark'
+
+interface ThemeConfig {
+  mode: ThemeMode
+  name: string
+  description: string
+  preview: {
+    background: string
+    cardBg: string
+    textPrimary: string
+    textSecondary: string
+    accent: string
+  }
+}
+
+const themeConfigs: Record<ThemeMode, ThemeConfig> = {
+  light: {
+    mode: 'light',
+    name: '🌅 Light Paradise',
+    description: 'Bright and airy tropical vibes',
+    preview: {
+      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%)',
+      cardBg: '#ffffff',
+      textPrimary: '#1e293b',
+      textSecondary: '#64748b',
+      accent: '#f59e0b'
+    }
+  },
+  medium: {
+    mode: 'medium',
+    name: '🌇 Medium Paradise',  
+    description: 'Balanced sunset atmosphere',
+    preview: {
+      background: 'linear-gradient(135deg, #374151 0%, #1f2937 50%, #111827 100%)',
+      cardBg: '#374151',
+      textPrimary: '#f3f4f6',
+      textSecondary: '#9ca3af',
+      accent: '#fbbf24'
+    }
+  },
+  dark: {
+    mode: 'dark',
+    name: '🌙 Dark Paradise',
+    description: 'Deep ocean night vibes',
+    preview: {
+      background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)',
+      cardBg: '#1e293b',
+      textPrimary: '#f1f5f9',
+      textSecondary: '#cbd5e1',
+      accent: '#06b6d4'
+    }
+  }
 }
 
 export default function SettingsPage() {
   const { data: session, status } = useSession()
-  const [activeColorPicker, setActiveColorPicker] = useState<string | null>(null)
-  const [themeColors, setThemeColors] = useState<ThemeColors>({
-    primary: "#F59E0B", // amber-500
-    secondary: "#06B6D4", // cyan-500
-    accent: "#EC4899", // pink-500
-    background: "#0F172A" // slate-900
-  })
-  const [previewMode, setPreviewMode] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState<ThemeMode>('dark')
+  const [previewTheme, setPreviewTheme] = useState<ThemeMode | null>(null)
 
-  // Load saved theme colors from localStorage
+  // Load saved theme from localStorage
   useEffect(() => {
-    const savedColors = localStorage.getItem('royalwavs-theme')
-    if (savedColors) {
-      setThemeColors(JSON.parse(savedColors))
+    const savedTheme = localStorage.getItem('royalwavs-theme-mode') as ThemeMode
+    if (savedTheme && themeConfigs[savedTheme]) {
+      setCurrentTheme(savedTheme)
+      applyTheme(savedTheme)
     }
   }, [])
 
-  // Apply theme colors to CSS variables
-  useEffect(() => {
-    if (previewMode) {
-      const root = document.documentElement
-      root.style.setProperty('--color-primary', themeColors.primary)
-      root.style.setProperty('--color-secondary', themeColors.secondary)
-      root.style.setProperty('--color-accent', themeColors.accent)
-      root.style.setProperty('--color-background', themeColors.background)
-    }
-  }, [themeColors, previewMode])
-
-  const handleColorChange = (colorType: keyof ThemeColors, color: string) => {
-    setThemeColors(prev => ({
-      ...prev,
-      [colorType]: color
-    }))
-  }
-
-  const saveTheme = () => {
-    localStorage.setItem('royalwavs-theme', JSON.stringify(themeColors))
-    // Apply the theme permanently
+  const applyTheme = (theme: ThemeMode) => {
     const root = document.documentElement
-    root.style.setProperty('--color-primary', themeColors.primary)
-    root.style.setProperty('--color-secondary', themeColors.secondary)
-    root.style.setProperty('--color-accent', themeColors.accent)
-    root.style.setProperty('--color-background', themeColors.background)
     
-    alert('Theme saved! Your custom colors will persist across sessions.')
-  }
-
-  const resetToDefault = () => {
-    const defaultColors = {
-      primary: "#F59E0B",
-      secondary: "#06B6D4", 
-      accent: "#EC4899",
-      background: "#0F172A"
+    // Remove all theme classes
+    root.classList.remove('theme-light', 'theme-medium', 'theme-dark')
+    
+    // Add the new theme class
+    root.classList.add(`theme-${theme}`)
+    
+    // Apply CSS variables for the theme
+    const config = themeConfigs[theme]
+    if (theme === 'light') {
+      root.style.setProperty('--bg-primary', '#f8fafc')
+      root.style.setProperty('--bg-secondary', '#ffffff')
+      root.style.setProperty('--bg-card', '#ffffff')
+      root.style.setProperty('--text-primary', '#1e293b')
+      root.style.setProperty('--text-secondary', '#64748b')
+      root.style.setProperty('--border-color', '#e2e8f0')
+      root.style.setProperty('--accent-primary', '#f59e0b')
+      root.style.setProperty('--accent-secondary', '#06b6d4')
+    } else if (theme === 'medium') {
+      root.style.setProperty('--bg-primary', '#374151')
+      root.style.setProperty('--bg-secondary', '#4b5563')
+      root.style.setProperty('--bg-card', '#374151')
+      root.style.setProperty('--text-primary', '#f3f4f6')
+      root.style.setProperty('--text-secondary', '#9ca3af')
+      root.style.setProperty('--border-color', '#6b7280')
+      root.style.setProperty('--accent-primary', '#fbbf24')
+      root.style.setProperty('--accent-secondary', '#10b981')
+    } else { // dark
+      root.style.setProperty('--bg-primary', '#0f172a')
+      root.style.setProperty('--bg-secondary', '#1e293b')
+      root.style.setProperty('--bg-card', '#1e293b')
+      root.style.setProperty('--text-primary', '#f1f5f9')
+      root.style.setProperty('--text-secondary', '#cbd5e1')
+      root.style.setProperty('--border-color', '#475569')
+      root.style.setProperty('--accent-primary', '#06b6d4')
+      root.style.setProperty('--accent-secondary', '#f59e0b')
     }
-    setThemeColors(defaultColors)
-    localStorage.removeItem('royalwavs-theme')
-    
-    // Reset CSS variables
-    const root = document.documentElement
-    root.style.removeProperty('--color-primary')
-    root.style.removeProperty('--color-secondary')
-    root.style.removeProperty('--color-accent')
-    root.style.removeProperty('--color-background')
   }
 
-  const colorPresets = [
-    { name: "Ocean Waves", primary: "#0EA5E9", secondary: "#06B6D4", accent: "#8B5CF6", background: "#0F172A" },
-    { name: "Sunset Vibes", primary: "#F59E0B", secondary: "#EF4444", accent: "#EC4899", background: "#1E1B4B" },
-    { name: "Forest Dreams", primary: "#10B981", secondary: "#059669", accent: "#F59E0B", background: "#064E3B" },
-    { name: "Purple Haze", primary: "#8B5CF6", secondary: "#A855F7", accent: "#EC4899", background: "#1E1B4B" },
-    { name: "Coral Reef", primary: "#FF6B6B", secondary: "#4ECDC4", accent: "#45B7D1", background: "#2C3E50" }
-  ]
+  const handleThemeChange = (theme: ThemeMode) => {
+    setCurrentTheme(theme)
+    applyTheme(theme)
+    localStorage.setItem('royalwavs-theme-mode', theme)
+  }
+
+  const previewThemeMode = (theme: ThemeMode) => {
+    setPreviewTheme(theme)
+    applyTheme(theme)
+  }
+
+  const cancelPreview = () => {
+    setPreviewTheme(null)
+    applyTheme(currentTheme)
+  }
+
+  const confirmPreview = () => {
+    if (previewTheme) {
+      handleThemeChange(previewTheme)
+      setPreviewTheme(null)
+    }
+  }
 
   if (status === "loading") {
     return (
@@ -103,8 +152,10 @@ export default function SettingsPage() {
     )
   }
 
+  const activeConfig = previewTheme ? themeConfigs[previewTheme] : themeConfigs[currentTheme]
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 pt-20 pb-12">
+    <div className="min-h-screen pt-20 pb-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         
         {/* Header */}
@@ -115,207 +166,151 @@ export default function SettingsPage() {
             </span>
           </h1>
           <p className="text-lg text-white/70 max-w-2xl mx-auto">
-            Customize your RoyalWavs experience with your own theme colors
+            Choose your perfect paradise atmosphere with light, medium, or dark mode
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Theme Mode Selection */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">
+            <span className="text-2xl mr-3">🌈</span>
+            Choose Your Paradise Vibe
+          </h2>
           
-          {/* Theme Customization */}
-          <div className="bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-2xl p-6 shadow-2xl">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
-              <span className="text-2xl mr-3">🎨</span>
-              Theme Colors
-            </h2>
-
-            {/* Color Controls */}
-            <div className="space-y-6">
-              {Object.entries(themeColors).map(([colorType, color]) => (
-                <div key={colorType}>
-                  <div className="flex items-center justify-between mb-3">
-                    <label className="text-white font-medium capitalize">
-                      {colorType === 'primary' && '🌟 Primary'}
-                      {colorType === 'secondary' && '🌊 Secondary'} 
-                      {colorType === 'accent' && '💎 Accent'}
-                      {colorType === 'background' && '🌙 Background'}
-                    </label>
-                    <div 
-                      className="w-12 h-12 rounded-xl border-2 border-white/20 cursor-pointer shadow-lg"
-                      style={{ backgroundColor: color }}
-                      onClick={() => setActiveColorPicker(activeColorPicker === colorType ? null : colorType)}
-                    />
-                  </div>
-                  
-                  {activeColorPicker === colorType && (
-                    <div className="mb-4">
-                      <HexColorPicker 
-                        color={color} 
-                        onChange={(newColor) => handleColorChange(colorType as keyof ThemeColors, newColor)}
-                      />
-                      <input
-                        type="text"
-                        value={color}
-                        onChange={(e) => handleColorChange(colorType as keyof ThemeColors, e.target.value)}
-                        className="mt-3 w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white text-center font-mono"
-                        placeholder="#000000"
-                      />
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Preset Themes */}
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold text-white mb-4">Quick Presets</h3>
-              <div className="grid grid-cols-1 gap-3">
-                {colorPresets.map((preset) => (
-                  <button
-                    key={preset.name}
-                    onClick={() => setThemeColors({
-                      primary: preset.primary,
-                      secondary: preset.secondary,
-                      accent: preset.accent,
-                      background: preset.background
-                    })}
-                    className="flex items-center space-x-3 p-3 bg-white/5 hover:bg-white/10 rounded-lg transition-all duration-200 group"
-                  >
-                    <div className="flex space-x-1">
-                      <div className="w-4 h-4 rounded-full" style={{ backgroundColor: preset.primary }} />
-                      <div className="w-4 h-4 rounded-full" style={{ backgroundColor: preset.secondary }} />
-                      <div className="w-4 h-4 rounded-full" style={{ backgroundColor: preset.accent }} />
-                    </div>
-                    <span className="text-white group-hover:text-amber-300 transition-colors">
-                      {preset.name}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mt-8">
-              <button
-                onClick={() => setPreviewMode(!previewMode)}
-                className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                  previewMode 
-                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/30' 
-                    : 'bg-gradient-to-r from-blue-500 to-cyan-600 text-white shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50'
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {Object.values(themeConfigs).map((config) => (
+              <div
+                key={config.mode}
+                className={`relative cursor-pointer rounded-2xl p-6 transition-all duration-300 hover:scale-105 ${
+                  currentTheme === config.mode
+                    ? 'ring-4 ring-amber-400/60 shadow-2xl shadow-amber-500/30'
+                    : previewTheme === config.mode
+                    ? 'ring-4 ring-cyan-400/60 shadow-2xl shadow-cyan-500/30'
+                    : 'hover:ring-2 hover:ring-white/30'
                 }`}
+                style={{ background: config.preview.background }}
+                onClick={() => previewThemeMode(config.mode)}
               >
-                {previewMode ? '✅ Previewing' : '👁️ Preview Theme'}
+                {/* Theme Preview */}
+                <div className="space-y-4">
+                  {/* Header */}
+                  <div className="text-center">
+                    <h3 className="text-xl font-bold mb-1" style={{ color: config.preview.textPrimary }}>
+                      {config.name}
+                    </h3>
+                    <p className="text-sm" style={{ color: config.preview.textSecondary }}>
+                      {config.description}
+                    </p>
+                  </div>
+
+                  {/* Mock Card */}
+                  <div 
+                    className="p-4 rounded-lg shadow-lg"
+                    style={{ backgroundColor: config.preview.cardBg }}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div 
+                        className="w-8 h-8 rounded-full flex items-center justify-center text-sm"
+                        style={{ backgroundColor: config.preview.accent }}
+                      >
+                        🎵
+                      </div>
+                      <div className="text-sm font-medium" style={{ color: config.preview.textPrimary }}>
+                        Sample Song
+                      </div>
+                    </div>
+                    <div className="text-lg font-bold mb-1" style={{ color: config.preview.accent }}>
+                      $2,500
+                    </div>
+                    <div className="text-xs" style={{ color: config.preview.textSecondary }}>
+                      Available to invest
+                    </div>
+                  </div>
+
+                  {/* Status Badge */}
+                  <div className="text-center">
+                    {currentTheme === config.mode && (
+                      <div className="inline-flex items-center px-3 py-1 bg-amber-500/20 border border-amber-400/40 rounded-full text-amber-300 text-xs font-medium">
+                        ✓ Currently Active
+                      </div>
+                    )}
+                    {previewTheme === config.mode && previewTheme !== currentTheme && (
+                      <div className="inline-flex items-center px-3 py-1 bg-cyan-500/20 border border-cyan-400/40 rounded-full text-cyan-300 text-xs font-medium">
+                        👁️ Previewing
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Preview Controls */}
+        {previewTheme && previewTheme !== currentTheme && (
+          <div className="mb-8 p-6 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-cyan-400/40 rounded-2xl">
+            <div className="text-center mb-4">
+              <h3 className="text-lg font-bold text-white mb-2">
+                👁️ Previewing {themeConfigs[previewTheme].name}
+              </h3>
+              <p className="text-cyan-300 text-sm">
+                This preview is applied to the entire website. Like what you see?
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={confirmPreview}
+                className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl shadow-lg shadow-green-500/30 hover:shadow-green-500/50 transition-all duration-300 hover:scale-105"
+              >
+                ✅ Apply This Theme
               </button>
               
               <button
-                onClick={saveTheme}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg shadow-amber-500/30 hover:shadow-amber-500/50 transition-all duration-300 hover:scale-105"
+                onClick={cancelPreview}
+                className="px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-slate-500/30 transition-all duration-300 hover:scale-105"
               >
-                💾 Save Theme
-              </button>
-              
-              <button
-                onClick={resetToDefault}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white font-semibold rounded-xl shadow-lg hover:shadow-slate-500/30 transition-all duration-300 hover:scale-105"
-              >
-                🔄 Reset
+                ❌ Cancel Preview
               </button>
             </div>
           </div>
+        )}
 
-          {/* Theme Preview */}
-          <div className="bg-gradient-to-br from-slate-900/80 via-purple-900/60 to-slate-900/80 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-6 shadow-2xl">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
-              <span className="text-2xl mr-3">👁️</span>
-              Live Preview
-            </h2>
-
-            {/* Preview Components */}
-            <div className="space-y-6">
-              {/* Mock Navigation */}
-              <div className="p-4 rounded-xl" style={{ backgroundColor: `${themeColors.background}20` }}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <div 
-                      className="w-8 h-8 rounded-full flex items-center justify-center"
-                      style={{ backgroundColor: themeColors.primary }}
-                    >
-                      🌊
-                    </div>
-                    <span className="font-bold text-white">RoyalWavs</span>
-                  </div>
-                  <div 
-                    className="px-4 py-2 rounded-lg text-white text-sm font-medium"
-                    style={{ backgroundColor: themeColors.accent }}
-                  >
-                    Your Theme
-                  </div>
-                </div>
+        {/* Current Theme Info */}
+        <div className="mb-8 bg-gradient-to-br from-slate-900/80 via-emerald-900/60 to-slate-900/80 backdrop-blur-xl border border-emerald-500/30 rounded-2xl p-6 shadow-2xl">
+          <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
+            <span className="text-2xl mr-3">🌟</span>
+            Your Current Paradise
+          </h2>
+          
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl font-bold text-emerald-300 mb-1">
+                {themeConfigs[currentTheme].name}
+              </h3>
+              <p className="text-white/70">
+                {themeConfigs[currentTheme].description}
+              </p>
+              <p className="text-sm text-white/50 mt-2">
+                Applied across all RoyalWavs pages
+              </p>
+            </div>
+            
+            <div className="text-right">
+              <div className="text-3xl mb-2">
+                {currentTheme === 'light' && '🌅'}
+                {currentTheme === 'medium' && '🌇'}  
+                {currentTheme === 'dark' && '🌙'}
               </div>
-
-              {/* Mock Cards */}
-              <div className="grid grid-cols-2 gap-4">
-                <div 
-                  className="p-4 rounded-xl border"
-                  style={{ 
-                    backgroundColor: `${themeColors.primary}10`,
-                    borderColor: `${themeColors.primary}30`
-                  }}
-                >
-                  <div className="text-2xl font-bold" style={{ color: themeColors.primary }}>
-                    $5,000
-                  </div>
-                  <div className="text-white/70 text-sm">Primary Color</div>
-                </div>
-                
-                <div 
-                  className="p-4 rounded-xl border"
-                  style={{ 
-                    backgroundColor: `${themeColors.secondary}10`,
-                    borderColor: `${themeColors.secondary}30`
-                  }}
-                >
-                  <div className="text-2xl font-bold" style={{ color: themeColors.secondary }}>
-                    🎵
-                  </div>
-                  <div className="text-white/70 text-sm">Secondary</div>
-                </div>
-              </div>
-
-              {/* Mock Button */}
-              <button 
-                className="w-full py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-105"
-                style={{ 
-                  background: `linear-gradient(135deg, ${themeColors.primary}, ${themeColors.accent})`
-                }}
-              >
-                Sample Button with Your Colors
-              </button>
-
-              {/* Color Values */}
-              <div className="space-y-2 text-xs font-mono">
-                <div className="flex justify-between">
-                  <span className="text-white/60">Primary:</span>
-                  <span className="text-white">{themeColors.primary}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/60">Secondary:</span>
-                  <span className="text-white">{themeColors.secondary}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/60">Accent:</span>
-                  <span className="text-white">{themeColors.accent}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/60">Background:</span>
-                  <span className="text-white">{themeColors.background}</span>
-                </div>
+              <div className="text-xs text-emerald-300 font-medium">
+                Active Theme
               </div>
             </div>
           </div>
         </div>
 
         {/* User Profile Section */}
-        <div className="mt-8 bg-gradient-to-br from-slate-900/80 via-cyan-900/60 to-slate-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-2xl p-6 shadow-2xl">
+        <div className="bg-gradient-to-br from-slate-900/80 via-cyan-900/60 to-slate-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-2xl p-6 shadow-2xl">
           <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
             <span className="text-2xl mr-3">👤</span>
             Profile Settings
