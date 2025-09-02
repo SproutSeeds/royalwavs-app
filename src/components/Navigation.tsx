@@ -77,11 +77,11 @@ export function Navigation() {
                   {/* User Button */}
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="group flex items-center space-x-3 px-6 py-3 bg-gradient-to-r from-pink-500/20 via-amber-400/20 to-orange-500/20 hover:from-pink-500/30 hover:via-amber-400/30 hover:to-orange-500/30 rounded-2xl backdrop-blur-xl border border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-amber-500/20"
+                    className="group flex items-center space-x-2 sm:space-x-3 px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-pink-500/20 via-amber-400/20 to-orange-500/20 hover:from-pink-500/30 hover:via-amber-400/30 hover:to-orange-500/30 rounded-xl sm:rounded-2xl backdrop-blur-xl border border-amber-400/30 hover:border-amber-400/50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl hover:shadow-amber-500/20"
                   >
                   {/* Profile Image */}
                   {session.user?.image && (
-                    <div className="w-8 h-8 rounded-full overflow-hidden ring-2 ring-amber-400/50 group-hover:ring-amber-400/80 transition-all duration-300">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden ring-2 ring-amber-400/50 group-hover:ring-amber-400/80 transition-all duration-300">
                       <img 
                         src={session.user.image} 
                         alt="Profile" 
@@ -90,19 +90,19 @@ export function Navigation() {
                     </div>
                   )}
                   
-                  {/* User Name */}
-                  <div className="text-left">
-                    <div className="text-white font-bold text-lg tracking-wide">
+                  {/* User Name - Hidden on very small screens */}
+                  <div className="text-left hidden xs:block">
+                    <div className="text-white font-bold text-sm sm:text-lg tracking-wide">
                       {session.user?.name?.split(' ')[0] || 'Paradise'}
                     </div>
-                    <div className="text-amber-300 text-xs font-medium opacity-80">
+                    <div className="text-amber-300 text-xs font-medium opacity-80 hidden sm:block">
                       Island Vibes ✨
                     </div>
                   </div>
 
                   {/* Dropdown Arrow */}
                   <div className={`transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`}>
-                    <svg className="w-4 h-4 text-amber-300" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-3 h-3 sm:w-4 sm:h-4 text-amber-300" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
                   </div>
@@ -205,20 +205,20 @@ export function Navigation() {
             ) : (
               <button
                 onClick={() => signIn()}
-                className="group flex items-center space-x-2 sm:space-x-3 px-4 sm:px-6 md:px-8 py-2 sm:py-3 bg-gradient-to-r from-pink-500 via-amber-400 to-orange-500 hover:from-pink-600 hover:via-amber-500 hover:to-orange-600 text-white rounded-xl sm:rounded-2xl transition-all duration-300 font-bold text-sm sm:text-base md:text-lg tracking-wide shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 hover:scale-105 border border-amber-400/50 relative overflow-hidden"
+                className="group flex items-center space-x-1 sm:space-x-2 px-3 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-pink-500 via-amber-400 to-orange-500 hover:from-pink-600 hover:via-amber-500 hover:to-orange-600 text-white rounded-lg sm:rounded-2xl transition-all duration-300 font-bold text-sm sm:text-base tracking-wide shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 hover:scale-105 border border-amber-400/50 relative overflow-hidden"
               >
                 {/* Background Animation */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
                 
                 {/* Palm Tree Icon */}
-                <div className="text-lg sm:text-xl md:text-2xl group-hover:animate-bounce">🌴</div>
+                <div className="text-base sm:text-xl group-hover:animate-bounce">🌴</div>
                 
                 {/* Text */}
                 <span className="relative z-10 hidden sm:inline">Enter Paradise</span>
                 <span className="relative z-10 inline sm:hidden">Sign In</span>
                 
-                {/* Sparkle */}
-                <div className="text-lg sm:text-xl group-hover:animate-pulse">✨</div>
+                {/* Sparkle - Hidden on very small screens */}
+                <div className="text-base sm:text-xl group-hover:animate-pulse hidden xs:block">✨</div>
               </button>
             )}
           </div>
