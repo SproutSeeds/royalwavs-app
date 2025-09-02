@@ -123,15 +123,15 @@ export default function HomePage() {
 
       {/* Sisy Section */}
       {showMaya && !showDemo && (
-        <div className={`min-h-screen flex items-center justify-center relative ${isTransitioning ? 'animate-fade-out' : 'animate-fadeIn'}`}>
-          <div className="text-center">
-            <div className="mb-16">
+        <div className={`min-h-screen flex items-start justify-center pt-32 relative ${isTransitioning ? 'animate-fade-out' : 'animate-fadeIn'}`}>
+          <div className="text-center w-full px-4">
+            <div className="mb-12">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-8">
                 <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
                   Meet Sisy
                 </span>
               </h2>
-              <p className="text-lg sm:text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto font-light px-4">
+              <p className="text-lg sm:text-xl md:text-2xl text-white/80 mb-8 max-w-3xl mx-auto font-light">
                 A talented bedroom producer about to change her life — and yours
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function HomePage() {
               )}
             </div>
 
-            <p className="text-lg text-white/60 mt-8 font-light">
+            <p className="text-lg text-white/60 mt-6 font-light">
               From bedroom beats to chart success — see how partnerships work
             </p>
           </div>

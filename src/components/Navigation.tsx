@@ -23,11 +23,12 @@ export function Navigation() {
 
   return (
     <nav className="bg-gradient-to-r from-black/30 via-teal-900/20 to-black/30 backdrop-blur-xl border-b border-amber-500/20 relative z-50">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+      <div className="w-full px-4 sm:px-6">
+        <div className="flex items-center h-16 sm:h-20">
           
-          {/* Left Side - Mobile Hamburger Menu */}
-          <div className="flex items-center">
+          {/* Left Side - Always Logo on Desktop / Mobile Hamburger */}
+          <div className="flex items-center w-64 justify-start -ml-1 sm:-ml-2">
+            {/* Mobile Hamburger Menu */}
             <div className="md:hidden">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -40,36 +41,47 @@ export function Navigation() {
                 </div>
               </button>
             </div>
+            
+            {/* Desktop Logo - Locked to Left */}
+            <div className="hidden md:block">
+              <Link href="/" className="flex items-center">
+                <span className="text-2xl md:text-3xl lg:text-4xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
+                  RoyalWavs
+                </span>
+              </Link>
+            </div>
+            
+            {/* Mobile Logo - Centered on small screens */}
+            <div className="md:hidden flex-1 flex justify-center">
+              <Link href="/" className="flex items-center">
+                <span className="text-lg sm:text-2xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
+                  RoyalWavs
+                </span>
+              </Link>
+            </div>
           </div>
 
-          {/* Centered Logo - Mobile and Desktop */}
-          <div className="flex-1 flex justify-center">
-            <Link href="/" className="flex items-center">
-              <span className="text-lg sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
-                RoyalWavs
-              </span>
-            </Link>
+          {/* Center - Navigation Links on Desktop */}
+          <div className="hidden md:flex flex-1 justify-center">
+            <div className="flex items-center space-x-8 lg:space-x-12">
+              <Link href="/" className="text-white/90 hover:text-amber-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
+                Discover
+              </Link>
+              {session && (
+                <>
+                  <Link href="/dashboard" className="text-white/90 hover:text-cyan-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
+                    Portfolio
+                  </Link>
+                  <Link href="/upload" className="text-white/90 hover:text-emerald-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
+                    Create
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
 
-          {/* Desktop Navigation Links - Positioned absolutely to not interfere with centering */}
-          <div className="hidden md:flex items-center space-x-10 absolute left-1/2 transform -translate-x-1/2 top-1/2 -translate-y-1/2">
-            <Link href="/" className="text-white/90 hover:text-amber-300 transition-all duration-300 font-medium tracking-wide hover:scale-105">
-              Discover
-            </Link>
-            {session && (
-              <>
-                <Link href="/dashboard" className="text-white/90 hover:text-cyan-300 transition-all duration-300 font-medium tracking-wide hover:scale-105">
-                  Portfolio
-                </Link>
-                <Link href="/upload" className="text-white/90 hover:text-emerald-300 transition-all duration-300 font-medium tracking-wide hover:scale-105">
-                  Create
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Right Side - Auth Section */}
-          <div>
+          {/* Right Side - Profile locked to right */}
+          <div className="w-64 flex justify-end">
             {status === "loading" ? (
               <div className="w-24 h-10 bg-gradient-to-r from-amber-500/20 to-cyan-500/20 rounded-xl animate-pulse" />
             ) : session ? (
@@ -110,10 +122,10 @@ export function Navigation() {
 
                 {/* Dropdown Menu */}
                 {dropdownOpen && (
-                  <div className="absolute right-0 top-full mt-3 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/60 py-1 z-[9999] animate-[fadeIn_0.2s_ease-out] overflow-hidden">
+                  <div className="absolute right-0 top-full mt-3 w-72 backdrop-blur-xl rounded-2xl shadow-2xl border py-1 z-[9999] animate-[fadeIn_0.2s_ease-out] overflow-hidden" style={{background: 'var(--bg-card)', borderColor: 'var(--border-primary)'}}>
                     
                     {/* User Info Header */}
-                    <div className="px-6 py-4 bg-gradient-to-r from-pink-50/80 to-amber-50/80 border-b border-amber-200/30">
+                    <div className="px-6 py-4 border-b" style={{background: 'var(--bg-secondary)', borderColor: 'var(--border-secondary)'}}>
                       <div className="flex items-center space-x-4">
                         {session.user?.image && (
                           <div className="w-14 h-14 rounded-full overflow-hidden ring-3 ring-pink-400/40 shadow-lg">
@@ -125,13 +137,13 @@ export function Navigation() {
                           </div>
                         )}
                         <div>
-                          <div className="font-bold text-gray-800 text-lg">
+                          <div className="font-bold text-lg" style={{color: 'var(--text-primary)'}}>
                             {session.user?.name || 'Music Partner'}
                           </div>
-                          <div className="text-sm text-gray-600 truncate max-w-[160px]">
+                          <div className="text-sm truncate max-w-[160px]" style={{color: 'var(--text-secondary)'}}>
                             {session.user?.email}
                           </div>
-                          <div className="text-xs text-pink-600 font-medium mt-1">
+                          <div className="text-xs font-medium mt-1" style={{color: 'var(--text-accent)'}}>
                             ✨ Paradise Member
                           </div>
                         </div>
@@ -144,14 +156,17 @@ export function Navigation() {
                       <Link
                         href="/dashboard"
                         onClick={() => setDropdownOpen(false)}
-                        className="block w-full group flex items-center space-x-4 px-6 py-4 text-gray-700 hover:bg-amber-100 transition-all duration-300 hover:scale-[1.02] transform cursor-pointer"
+                        className="block w-full group flex items-center space-x-4 px-6 py-4 hover:scale-[1.02] transform cursor-pointer transition-all duration-300"
+                        style={{color: 'var(--text-primary)'}}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-card-hover)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                       >
                         <div className="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center transition-all duration-300">
                           <div className="text-lg text-pink-600">🎵</div>
                         </div>
                         <div>
-                          <div className="font-semibold text-gray-800">My Partnerships</div>
-                          <div className="text-xs text-gray-500">Songs & investments</div>
+                          <div className="font-semibold" style={{color: 'var(--text-primary)'}}>My Partnerships</div>
+                          <div className="text-xs" style={{color: 'var(--text-secondary)'}}>Songs & investments</div>
                         </div>
                         <div className="ml-auto text-pink-400 group-hover:translate-x-1 transition-all duration-300">→</div>
                       </Link>
@@ -160,20 +175,23 @@ export function Navigation() {
                       <Link
                         href="/settings"
                         onClick={() => setDropdownOpen(false)}
-                        className="block w-full group flex items-center space-x-4 px-6 py-4 text-gray-700 hover:bg-amber-100 transition-all duration-300 hover:scale-[1.02] transform cursor-pointer"
+                        className="block w-full group flex items-center space-x-4 px-6 py-4 hover:scale-[1.02] transform cursor-pointer transition-all duration-300"
+                        style={{color: 'var(--text-primary)'}}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-card-hover)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                       >
                         <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center transition-all duration-300">
                           <div className="text-lg text-amber-600">⚙️</div>
                         </div>
                         <div>
-                          <div className="font-semibold text-gray-800">Settings</div>
-                          <div className="text-xs text-gray-500">Account preferences</div>
+                          <div className="font-semibold" style={{color: 'var(--text-primary)'}}>Settings</div>
+                          <div className="text-xs" style={{color: 'var(--text-secondary)'}}>Account preferences</div>
                         </div>
                         <div className="ml-auto text-amber-400 group-hover:translate-x-1 transition-all duration-300">→</div>
                       </Link>
 
                       {/* Divider */}
-                      <div className="mx-4 my-3 border-t border-gray-200/60"></div>
+                      <div className="mx-4 my-3 border-t" style={{borderColor: 'var(--border-secondary)'}}></div>
 
                       {/* Sign Out */}
                       <button
@@ -187,14 +205,17 @@ export function Navigation() {
                             signOut({ callbackUrl: '/' })
                           }, 100)
                         }}
-                        className="group flex items-center space-x-4 px-6 py-4 text-gray-700 hover:bg-amber-100/80 transition-all duration-300 hover:scale-[1.02] transform w-full text-left cursor-pointer"
+                        className="group flex items-center space-x-4 px-6 py-4 hover:scale-[1.02] transform w-full text-left cursor-pointer transition-all duration-300"
+                        style={{color: 'var(--text-primary)'}}
+                        onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-card-hover)'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                       >
                         <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center transition-all duration-300">
                           <div className="text-lg text-red-600">🏝️</div>
                         </div>
                         <div>
-                          <div className="font-semibold text-gray-800">Leave Paradise</div>
-                          <div className="text-xs text-gray-500">Sign out safely</div>
+                          <div className="font-semibold" style={{color: 'var(--text-primary)'}}>Leave Paradise</div>
+                          <div className="text-xs" style={{color: 'var(--text-secondary)'}}>Sign out safely</div>
                         </div>
                         <div className="ml-auto text-red-400 group-hover:translate-x-1 transition-all duration-300">↗</div>
                       </button>
