@@ -28,7 +28,7 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
   const publicAngle = (publicPercentage / 100) * 360
 
   return (
-    <div className="max-w-2xl mx-auto p-8 bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-3xl shadow-2xl shadow-amber-500/20 relative overflow-hidden">
+    <div className="max-w-2xl mx-auto p-4 sm:p-6 md:p-8 bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/30 rounded-3xl shadow-2xl shadow-amber-500/20 relative overflow-hidden">
       {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-10 left-10 w-2 h-2 bg-amber-400/60 rounded-full animate-pulse"></div>
@@ -38,19 +38,105 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
       </div>
 
       <div className="relative z-10">
-        <h3 className="text-3xl font-bold text-center mb-8 text-white">
+        <h3 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 text-white">
           <span className="bg-gradient-to-r from-amber-300 to-cyan-300 bg-clip-text text-transparent">
             Set Royalty Split
           </span>
         </h3>
 
         {/* Interactive Pie Chart */}
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center mb-8 sm:mb-12">
           <div className="relative">
+            {/* Mobile SVG (240px) */}
+            <svg 
+              width="240" 
+              height="240" 
+              className={`sm:hidden transition-transform duration-500 ${isDragging ? 'scale-105' : 'scale-100'}`}
+            >
+              {/* Background circle */}
+              <circle
+                cx="120"
+                cy="120"
+                r="100"
+                fill="none"
+                stroke="rgba(255, 255, 255, 0.1)"
+                strokeWidth="2"
+              />
+              
+              {/* Artist slice */}
+              <path
+                d={`M 120 120 L 120 20 A 100 100 0 ${artistAngle > 180 ? 1 : 0} 1 ${
+                  120 + 100 * Math.sin((artistAngle * Math.PI) / 180)
+                } ${
+                  120 - 100 * Math.cos((artistAngle * Math.PI) / 180)
+                } Z`}
+                fill="url(#artistGradient)"
+                className="transition-all duration-500 hover:opacity-90 cursor-pointer"
+                style={{
+                  filter: `drop-shadow(0 0 10px rgba(251, 191, 36, ${artistPercentage / 200}))`
+                }}
+              />
+              
+              {/* Public slice */}
+              <path
+                d={`M 120 120 L ${
+                  120 + 100 * Math.sin((artistAngle * Math.PI) / 180)
+                } ${
+                  120 - 100 * Math.cos((artistAngle * Math.PI) / 180)
+                } A 100 100 0 ${publicAngle > 180 ? 1 : 0} 1 120 20 Z`}
+                fill="url(#publicGradient)"
+                className="transition-all duration-500 hover:opacity-90 cursor-pointer"
+                style={{
+                  filter: `drop-shadow(0 0 10px rgba(6, 182, 212, ${publicPercentage / 200}))`
+                }}
+              />
+              
+              {/* Center circle */}
+              <circle
+                cx="120"
+                cy="120"
+                r="35"
+                fill="rgba(15, 23, 42, 0.9)"
+                stroke="rgba(251, 191, 36, 0.5)"
+                strokeWidth="2"
+              />
+              
+              {/* Center text */}
+              <text
+                x="120"
+                y="115"
+                textAnchor="middle"
+                className="fill-amber-300 text-xs font-semibold"
+              >
+                Royalty
+              </text>
+              <text
+                x="120"
+                y="130"
+                textAnchor="middle"
+                className="fill-cyan-300 text-xs font-semibold"
+              >
+                Split
+              </text>
+
+              {/* Gradients */}
+              <defs>
+                <linearGradient id="artistGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#F59E0B" />
+                  <stop offset="100%" stopColor="#EF4444" />
+                </linearGradient>
+                <linearGradient id="publicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#06B6D4" />
+                  <stop offset="100%" stopColor="#8B5CF6" />
+                </linearGradient>
+              </defs>
+            </svg>
+
+            {/* Desktop SVG (280px) */}
             <svg 
               width="280" 
               height="280" 
-              className={`transition-transform duration-500 ${isDragging ? 'scale-105' : 'scale-100'}`}
+              className={`hidden sm:block transition-transform duration-500 ${isDragging ? 'scale-105' : 'scale-100'}`}
             >
               {/* Background circle */}
               <circle
@@ -69,7 +155,7 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
                 } ${
                   140 - 120 * Math.cos((artistAngle * Math.PI) / 180)
                 } Z`}
-                fill="url(#artistGradient)"
+                fill="url(#artistGradientDesktop)"
                 className="transition-all duration-500 hover:opacity-90 cursor-pointer"
                 style={{
                   filter: `drop-shadow(0 0 10px rgba(251, 191, 36, ${artistPercentage / 200}))`
@@ -83,7 +169,7 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
                 } ${
                   140 - 120 * Math.cos((artistAngle * Math.PI) / 180)
                 } A 120 120 0 ${publicAngle > 180 ? 1 : 0} 1 140 20 Z`}
-                fill="url(#publicGradient)"
+                fill="url(#publicGradientDesktop)"
                 className="transition-all duration-500 hover:opacity-90 cursor-pointer"
                 style={{
                   filter: `drop-shadow(0 0 10px rgba(6, 182, 212, ${publicPercentage / 200}))`
@@ -120,11 +206,11 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
 
               {/* Gradients */}
               <defs>
-                <linearGradient id="artistGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient id="artistGradientDesktop" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#F59E0B" />
                   <stop offset="100%" stopColor="#EF4444" />
                 </linearGradient>
-                <linearGradient id="publicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient id="publicGradientDesktop" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#06B6D4" />
                   <stop offset="100%" stopColor="#8B5CF6" />
                 </linearGradient>
@@ -132,17 +218,17 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
             </svg>
 
             {/* Floating percentage labels */}
-            <div className={`absolute top-8 left-1/2 transform -translate-x-1/2 transition-all duration-500 ${isDragging ? 'scale-110' : 'scale-100'}`}>
-              <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-sm border border-amber-400/40 rounded-full px-4 py-2 shadow-lg">
-                <span className="text-amber-300 font-bold text-lg">{artistPercentage}%</span>
-                <span className="text-white/70 text-sm ml-2">Artist</span>
+            <div className={`absolute top-6 sm:top-8 left-1/2 transform -translate-x-1/2 transition-all duration-500 ${isDragging ? 'scale-110' : 'scale-100'}`}>
+              <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 backdrop-blur-sm border border-amber-400/40 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-lg">
+                <span className="text-amber-300 font-bold text-base sm:text-lg">{artistPercentage}%</span>
+                <span className="text-white/70 text-xs sm:text-sm ml-1 sm:ml-2">Artist</span>
               </div>
             </div>
 
-            <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-500 ${isDragging ? 'scale-110' : 'scale-100'}`}>
-              <div className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm border border-cyan-400/40 rounded-full px-4 py-2 shadow-lg">
-                <span className="text-cyan-300 font-bold text-lg">{publicPercentage}%</span>
-                <span className="text-white/70 text-sm ml-2">Public</span>
+            <div className={`absolute bottom-6 sm:bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-500 ${isDragging ? 'scale-110' : 'scale-100'}`}>
+              <div className="bg-gradient-to-r from-cyan-500/20 to-purple-500/20 backdrop-blur-sm border border-cyan-400/40 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 shadow-lg">
+                <span className="text-cyan-300 font-bold text-base sm:text-lg">{publicPercentage}%</span>
+                <span className="text-white/70 text-xs sm:text-sm ml-1 sm:ml-2">Public</span>
               </div>
             </div>
           </div>
@@ -204,30 +290,30 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
         </div>
 
         {/* Split Preview Cards */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6">
           {/* Artist Card */}
-          <div className={`bg-gradient-to-br from-amber-500/20 to-orange-500/20 backdrop-blur-sm border border-amber-400/40 rounded-xl p-4 transition-all duration-500 ${isDragging ? 'scale-105 shadow-xl shadow-amber-500/30' : 'shadow-lg'}`}>
+          <div className={`bg-gradient-to-br from-amber-500/20 to-orange-500/20 backdrop-blur-sm border border-amber-400/40 rounded-xl p-3 sm:p-4 transition-all duration-500 ${isDragging ? 'scale-105 shadow-xl shadow-amber-500/30' : 'shadow-lg'}`}>
             <div className="text-center">
-              <div className="text-3xl mb-2">🎤</div>
-              <div className="text-amber-300 font-bold text-2xl mb-1">{artistPercentage}%</div>
-              <div className="text-white/80 text-sm font-medium">You Keep</div>
+              <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">🎤</div>
+              <div className="text-amber-300 font-bold text-xl sm:text-2xl mb-1">{artistPercentage}%</div>
+              <div className="text-white/80 text-xs sm:text-sm font-medium">You Keep</div>
               <div className="text-white/60 text-xs mt-1">Artist Royalties</div>
             </div>
           </div>
 
           {/* Public Card */}
-          <div className={`bg-gradient-to-br from-cyan-500/20 to-purple-500/20 backdrop-blur-sm border border-cyan-400/40 rounded-xl p-4 transition-all duration-500 ${isDragging ? 'scale-105 shadow-xl shadow-cyan-500/30' : 'shadow-lg'}`}>
+          <div className={`bg-gradient-to-br from-cyan-500/20 to-purple-500/20 backdrop-blur-sm border border-cyan-400/40 rounded-xl p-3 sm:p-4 transition-all duration-500 ${isDragging ? 'scale-105 shadow-xl shadow-cyan-500/30' : 'shadow-lg'}`}>
             <div className="text-center">
-              <div className="text-3xl mb-2">💎</div>
-              <div className="text-cyan-300 font-bold text-2xl mb-1">{publicPercentage}%</div>
-              <div className="text-white/80 text-sm font-medium">For Partners</div>
+              <div className="text-2xl sm:text-3xl mb-1 sm:mb-2">💎</div>
+              <div className="text-cyan-300 font-bold text-xl sm:text-2xl mb-1">{publicPercentage}%</div>
+              <div className="text-white/80 text-xs sm:text-sm font-medium">For Partners</div>
               <div className="text-white/60 text-xs mt-1">Available to Buy</div>
             </div>
           </div>
         </div>
 
         {/* Recommended Split Badges */}
-        <div className="flex justify-center space-x-4 mt-8 mb-12">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 mb-8 sm:mb-12">
           {[
             { artist: 70, label: "Conservative" },
             { artist: 60, label: "Balanced" },
@@ -236,7 +322,7 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
             <button
               key={preset.label}
               onClick={() => setArtistPercentage(preset.artist)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
                 artistPercentage === preset.artist
                   ? 'bg-amber-500/30 text-amber-300 border border-amber-400/50 scale-105'
                   : 'bg-white/10 text-white/70 border border-white/20 hover:bg-white/20 hover:scale-105'
@@ -248,15 +334,15 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
         </div>
 
         {/* X-Factor Projections */}
-        <div className="space-y-6">
-          <h4 className="text-2xl font-bold text-center text-white mb-6">
+        <div className="space-y-4 sm:space-y-6">
+          <h4 className="text-xl sm:text-2xl font-bold text-center text-white mb-4 sm:mb-6">
             <span className="bg-gradient-to-r from-emerald-300 to-cyan-300 bg-clip-text text-transparent">
               Potential Outcomes
             </span>
           </h4>
 
           {/* Scenario Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {[
               { scenario: "Moderate Success", fans: 100, avgInvestment: 50, monthlyStreaming: 2500 },
               { scenario: "Viral Hit", fans: 500, avgInvestment: 75, monthlyStreaming: 15000 },
@@ -273,7 +359,7 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
               return (
                 <div
                   key={scenario.scenario}
-                  className={`bg-gradient-to-br from-slate-800/60 to-slate-700/60 backdrop-blur-sm border rounded-xl p-6 transition-all duration-500 hover:scale-105 ${
+                  className={`bg-gradient-to-br from-slate-800/60 to-slate-700/60 backdrop-blur-sm border rounded-xl p-4 sm:p-6 transition-all duration-500 hover:scale-105 ${
                     index === 0 ? 'border-emerald-400/40 hover:shadow-emerald-500/20' :
                     index === 1 ? 'border-cyan-400/40 hover:shadow-cyan-500/20' :
                     index === 2 ? 'border-amber-400/40 hover:shadow-amber-500/20' :
@@ -281,7 +367,7 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
                   } hover:shadow-xl`}
                 >
                   <div className="text-center">
-                    <h5 className={`text-lg font-bold mb-3 ${
+                    <h5 className={`text-base sm:text-lg font-bold mb-2 sm:mb-3 ${
                       index === 0 ? 'text-emerald-300' :
                       index === 1 ? 'text-cyan-300' :
                       index === 2 ? 'text-amber-300' :
@@ -290,40 +376,40 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
                       {scenario.scenario}
                     </h5>
                     
-                    <div className="space-y-2 mb-4">
-                      <div className="text-white/70 text-sm">
+                    <div className="space-y-1 sm:space-y-2 mb-3 sm:mb-4">
+                      <div className="text-white/70 text-xs sm:text-sm">
                         {scenario.fans} fans invest ${scenario.avgInvestment} each
                       </div>
-                      <div className="text-white/70 text-sm">
+                      <div className="text-white/70 text-xs sm:text-sm">
                         ${scenario.monthlyStreaming}/month streaming revenue
                       </div>
                     </div>
 
                     {/* Key Metrics */}
-                    <div className="space-y-3">
-                      <div className="bg-white/5 rounded-lg p-3">
-                        <div className="text-2xl font-bold text-white">
+                    <div className="space-y-2 sm:space-y-3">
+                      <div className="bg-white/5 rounded-lg p-2 sm:p-3">
+                        <div className="text-lg sm:text-2xl font-bold text-white">
                           ${individualMonthlyReturn.toFixed(2)}
                         </div>
                         <div className="text-white/60 text-xs">Monthly return per fan</div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-white/5 rounded-lg p-3 text-center">
-                          <div className="text-lg font-bold text-emerald-300">
+                      <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                        <div className="bg-white/5 rounded-lg p-2 sm:p-3 text-center">
+                          <div className="text-sm sm:text-lg font-bold text-emerald-300">
                             ${annualReturn.toFixed(0)}
                           </div>
                           <div className="text-white/60 text-xs">Annual return</div>
                         </div>
-                        <div className="bg-white/5 rounded-lg p-3 text-center">
-                          <div className={`text-lg font-bold ${roiPercentage > 100 ? 'text-emerald-300' : roiPercentage > 50 ? 'text-amber-300' : 'text-cyan-300'}`}>
+                        <div className="bg-white/5 rounded-lg p-2 sm:p-3 text-center">
+                          <div className={`text-sm sm:text-lg font-bold ${roiPercentage > 100 ? 'text-emerald-300' : roiPercentage > 50 ? 'text-amber-300' : 'text-cyan-300'}`}>
                             {roiPercentage.toFixed(0)}%
                           </div>
                           <div className="text-white/60 text-xs">ROI</div>
                         </div>
                       </div>
 
-                      <div className="text-white/50 text-xs pt-2 border-t border-white/10">
+                      <div className="text-white/50 text-xs pt-1 sm:pt-2 border-t border-white/10">
                         Based on {publicPercentage}% fan share
                       </div>
                     </div>
@@ -334,20 +420,20 @@ export function RoyaltyAllocationChart({ onAllocationChange }: RoyaltyAllocation
           </div>
 
           {/* Summary Impact */}
-          <div className="bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-amber-500/20 backdrop-blur-sm border border-purple-400/40 rounded-xl p-6 text-center">
-            <h5 className="text-xl font-bold text-white mb-4">Your Partnership Impact</h5>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-amber-500/20 backdrop-blur-sm border border-purple-400/40 rounded-xl p-4 sm:p-6 text-center">
+            <h5 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">Your Partnership Impact</h5>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               <div>
-                <div className="text-2xl font-bold text-purple-300">{publicPercentage}%</div>
-                <div className="text-white/60 text-sm">Revenue shared with fans</div>
+                <div className="text-xl sm:text-2xl font-bold text-purple-300">{publicPercentage}%</div>
+                <div className="text-white/60 text-xs sm:text-sm">Revenue shared with fans</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-pink-300">{artistPercentage}%</div>
-                <div className="text-white/60 text-sm">You keep</div>
+                <div className="text-xl sm:text-2xl font-bold text-pink-300">{artistPercentage}%</div>
+                <div className="text-white/60 text-xs sm:text-sm">You keep</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-amber-300">∞</div>
-                <div className="text-white/60 text-sm">Partnership potential</div>
+                <div className="text-xl sm:text-2xl font-bold text-amber-300">∞</div>
+                <div className="text-white/60 text-xs sm:text-sm">Partnership potential</div>
               </div>
             </div>
           </div>
