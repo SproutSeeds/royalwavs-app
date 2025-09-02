@@ -143,8 +143,7 @@ export default function HomePage() {
                 disabled={buttonPoofing}
                 className={`group relative px-6 sm:px-8 md:px-12 py-4 sm:py-5 md:py-6 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-600 text-white rounded-3xl font-black text-lg sm:text-xl md:text-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 overflow-hidden ${buttonPoofing ? 'animate-smoke-poof' : ''}`}
               >
-                {/* Sparkle Animation Background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                {/* Removed shimmer - no color flashing */}
                 
                 {/* Sparkles */}
                 <div className="absolute top-2 left-8 w-2 h-2 bg-white rounded-full animate-ping opacity-60"></div>

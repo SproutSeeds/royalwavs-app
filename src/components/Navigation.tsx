@@ -23,11 +23,11 @@ export function Navigation() {
 
   return (
     <nav className="bg-gradient-to-r from-black/30 via-teal-900/20 to-black/30 backdrop-blur-xl border-b border-amber-500/20 relative z-50">
-      <div className="w-full px-4 sm:px-6">
+      <div className="w-full px-6 sm:px-8">
         <div className="flex items-center h-16 sm:h-20">
           
           {/* Left Side - Always Logo on Desktop / Mobile Hamburger */}
-          <div className="flex items-center w-64 justify-start -ml-1 sm:-ml-2">
+          <div className="flex items-center w-64 justify-start">
             {/* Mobile Hamburger Menu */}
             <div className="md:hidden">
               <button
@@ -44,8 +44,8 @@ export function Navigation() {
             
             {/* Desktop Logo - Locked to Left */}
             <div className="hidden md:block">
-              <Link href="/" className="flex items-center">
-                <span className="text-2xl md:text-3xl lg:text-4xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
+              <Link href="/" className="flex items-center group">
+                <span className="text-2xl md:text-3xl lg:text-4xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight hover:drop-shadow-lg transition-all duration-500 hover:scale-105">
                   RoyalWavs
                 </span>
               </Link>
@@ -53,8 +53,8 @@ export function Navigation() {
             
             {/* Mobile Logo - Centered on small screens */}
             <div className="md:hidden flex-1 flex justify-center">
-              <Link href="/" className="flex items-center">
-                <span className="text-lg sm:text-2xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
+              <Link href="/" className="flex items-center group">
+                <span className="text-lg sm:text-2xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight hover:drop-shadow-lg transition-all duration-500 hover:scale-105">
                   RoyalWavs
                 </span>
               </Link>
