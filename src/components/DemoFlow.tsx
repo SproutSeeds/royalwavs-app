@@ -157,31 +157,31 @@ export function DemoFlowSection({ showPhysics = false }: DemoFlowSectionProps) {
       <div className={`relative ${showPhysics && physicsStarted ? 'animate-fall-bounce-delay-2' : showPhysics ? 'opacity-0' : ''}`}>
 
         {/* Step Navigation */}
-        <div className={`flex justify-center items-center space-x-4 sm:space-x-6 md:space-x-8 lg:space-x-16 mb-12 px-4 ${showPhysics && physicsStarted ? 'animate-fall-bounce-delay-3' : showPhysics ? 'opacity-0' : ''}`}>
+        <div className={`flex justify-center items-center gap-2 sm:gap-4 md:gap-8 lg:gap-16 mb-16 sm:mb-20 px-2 sm:px-4 ${showPhysics && physicsStarted ? 'animate-fall-bounce-delay-3' : showPhysics ? 'opacity-0' : ''}`}>
           {demoSteps.map((step) => (
             <button
               key={step.id}
               onClick={() => handleStepClick(step.id)}
-              className="group relative transition-all duration-500 cursor-pointer"
+              className="group relative transition-all duration-500 cursor-pointer flex flex-col items-center flex-1 max-w-20 sm:max-w-24 md:max-w-32"
             >
               {/* Step Circle */}
-              <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-500 ${
+              <div className={`w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-500 mb-2 sm:mb-3 ${
                 activeStep >= step.id 
                   ? step.id === 5 
                     ? 'bg-gradient-to-br from-blue-500 to-purple-500 shadow-lg shadow-blue-500/50 scale-110'
                     : 'bg-gradient-to-br from-pink-500 to-amber-500 shadow-lg shadow-pink-500/50 scale-110'
                   : 'bg-gray-600/40 hover:bg-gray-500/60'
               }`}>
-                <span className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+                <span className="text-sm sm:text-xl md:text-2xl font-bold text-white">
                   {step.id === 5 ? '🎴' : step.id}
                 </span>
               </div>
               
               {/* Step Label */}
-              <div className="absolute top-16 sm:top-18 md:top-20 left-1/2 transform -translate-x-1/2 text-center w-24 sm:w-28 md:w-32">
-                <div className={`font-semibold text-xs sm:text-sm transition-colors duration-300 ${
+              <div className="text-center w-full">
+                <div className={`font-semibold text-xs sm:text-sm leading-tight transition-colors duration-300 ${
                   activeStep >= step.id ? 'text-amber-300' : 'text-white/60'
-                }`}>
+                } break-words hyphens-auto`}>
                   {step.title}
                 </div>
               </div>
