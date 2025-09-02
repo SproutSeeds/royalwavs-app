@@ -19,22 +19,13 @@ export default function SettingsPage() {
   }, [])
 
   const applyTheme = (theme: ThemeMode) => {
-    const body = document.body
+    const html = document.documentElement
     
-    // Remove all theme classes
-    body.classList.remove('theme-light', 'theme-medium', 'theme-dark')
+    // Remove all theme classes from html
+    html.classList.remove('theme-light', 'theme-medium', 'theme-dark')
     
-    // Add the new theme class
-    body.classList.add(`theme-${theme}`)
-    
-    // Simple approach: just change body background and some basic colors
-    if (theme === 'light') {
-      body.style.background = 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)'
-    } else if (theme === 'medium') {
-      body.style.background = 'linear-gradient(135deg, #374151 0%, #1f2937 100%)'
-    } else { // dark
-      body.style.background = 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)'
-    }
+    // Add the new theme class to html
+    html.classList.add(`theme-${theme}`)
   }
 
   const handleThemeChange = (theme: ThemeMode) => {

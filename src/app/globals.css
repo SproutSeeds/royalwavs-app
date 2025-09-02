@@ -3,6 +3,16 @@
 :root {
   --background: #0a0f0f;
   --foreground: #f0f9ff;
+  
+  /* Theme system variables */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --border-color: #475569;
+  --accent-primary: #06b6d4;
+  --accent-secondary: #f59e0b;
 }
 
 @theme inline {
@@ -407,4 +417,41 @@ body {
 ::selection {
   background: rgba(251, 191, 36, 0.3);
   color: #ffffff;
+}
+
+/* Theme System */
+/* Light theme */
+html.theme-light {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-card: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --border-color: #e2e8f0;
+  --accent-primary: #f59e0b;
+  --accent-secondary: #06b6d4;
+}
+
+/* Medium theme */
+html.theme-medium {
+  --bg-primary: #374151;
+  --bg-secondary: #4b5563;
+  --bg-card: #6b7280;
+  --text-primary: #f3f4f6;
+  --text-secondary: #d1d5db;
+  --border-color: #9ca3af;
+  --accent-primary: #fbbf24;
+  --accent-secondary: #10b981;
+}
+
+/* Dark theme */
+html.theme-dark {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --border-color: #475569;
+  --accent-primary: #06b6d4;
+  --accent-secondary: #f59e0b;
 }
