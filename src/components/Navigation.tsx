@@ -22,14 +22,14 @@ export function Navigation() {
 
   return (
     <nav className="bg-gradient-to-r from-black/30 via-teal-900/20 to-black/30 backdrop-blur-xl border-b border-amber-500/20">
-      <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between h-20">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
               <span className="text-slate-900 font-black text-lg">🌊</span>
             </div>
-            <span className="text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
+            <span className="text-xl sm:text-2xl md:text-3xl font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight">
               RoyalWavs
             </span>
           </Link>
@@ -188,19 +188,20 @@ export function Navigation() {
             ) : (
               <button
                 onClick={() => signIn()}
-                className="group flex items-center space-x-3 px-8 py-3 bg-gradient-to-r from-pink-500 via-amber-400 to-orange-500 hover:from-pink-600 hover:via-amber-500 hover:to-orange-600 text-white rounded-2xl transition-all duration-300 font-bold text-lg tracking-wide shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 hover:scale-105 border border-amber-400/50 relative overflow-hidden"
+                className="group flex items-center space-x-2 sm:space-x-3 px-4 sm:px-6 md:px-8 py-2 sm:py-3 bg-gradient-to-r from-pink-500 via-amber-400 to-orange-500 hover:from-pink-600 hover:via-amber-500 hover:to-orange-600 text-white rounded-xl sm:rounded-2xl transition-all duration-300 font-bold text-sm sm:text-base md:text-lg tracking-wide shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 hover:scale-105 border border-amber-400/50 relative overflow-hidden"
               >
                 {/* Background Animation */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
                 
                 {/* Palm Tree Icon */}
-                <div className="text-2xl group-hover:animate-bounce">🌴</div>
+                <div className="text-lg sm:text-xl md:text-2xl group-hover:animate-bounce">🌴</div>
                 
                 {/* Text */}
-                <span className="relative z-10">Enter Paradise</span>
+                <span className="relative z-10 hidden sm:inline">Enter Paradise</span>
+                <span className="relative z-10 inline sm:hidden">Sign In</span>
                 
                 {/* Sparkle */}
-                <div className="text-xl group-hover:animate-pulse">✨</div>
+                <div className="text-lg sm:text-xl group-hover:animate-pulse">✨</div>
               </button>
             )}
           </div>

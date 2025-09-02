@@ -90,7 +90,7 @@ export default function HomePage() {
           <div className="absolute left-2/3 top-2/5 w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse opacity-50"></div>
           
           <div className="relative z-10">
-            <h1 className="text-8xl md:text-9xl font-black mb-8 leading-tight">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-8 leading-tight">
               <span className="bg-gradient-to-r from-amber-300 via-orange-400 to-amber-500 bg-clip-text text-transparent text-shimmer">
                 Build Artists
               </span>
@@ -102,13 +102,13 @@ export default function HomePage() {
             
             <div className="w-40 h-1.5 bg-gradient-to-r from-amber-400 to-cyan-400 mx-auto mb-10 rounded-full"></div>
             
-            <p className="text-3xl text-white/90 mb-8 font-light leading-relaxed max-w-4xl mx-auto">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-white/90 mb-8 font-light leading-relaxed max-w-4xl mx-auto px-4">
               <span className="text-shimmer">Partner with rising stars by acquiring{" "}</span>
               <span className="text-amber-300 font-medium text-shimmer">royalty shares</span>
               <span className="text-shimmer">{" "}— when they succeed, you succeed together</span>
             </p>
             
-            <p className="text-xl text-cyan-200/80 max-w-3xl mx-auto font-light mb-20 text-shimmer">
+            <p className="text-base sm:text-lg md:text-xl text-cyan-200/80 max-w-3xl mx-auto font-light mb-20 text-shimmer px-4">
               Be part of their journey from the beginning — Like owning stock in the next music legend
             </p>
 
@@ -126,12 +126,12 @@ export default function HomePage() {
         <div className={`min-h-screen flex items-center justify-center relative ${isTransitioning ? 'animate-fade-out' : 'animate-fadeIn'}`}>
           <div className="text-center">
             <div className="mb-16">
-              <h2 className="text-6xl font-black mb-8">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-8">
                 <span className="bg-gradient-to-r from-pink-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent">
                   Meet Sisy
                 </span>
               </h2>
-              <p className="text-2xl text-white/80 mb-12 max-w-3xl mx-auto font-light">
+              <p className="text-lg sm:text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto font-light px-4">
                 A talented bedroom producer about to change her life — and yours
               </p>
             </div>
@@ -141,7 +141,7 @@ export default function HomePage() {
               <button
                 onClick={handleWatchJourney}
                 disabled={buttonPoofing}
-                className={`group relative px-12 py-6 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-600 text-white rounded-3xl font-black text-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 overflow-hidden ${buttonPoofing ? 'animate-smoke-poof' : ''}`}
+                className={`group relative px-6 sm:px-8 md:px-12 py-4 sm:py-5 md:py-6 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-600 text-white rounded-3xl font-black text-lg sm:text-xl md:text-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 overflow-hidden ${buttonPoofing ? 'animate-smoke-poof' : ''}`}
               >
                 {/* Sparkle Animation Background */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>

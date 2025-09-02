@@ -40,20 +40,20 @@ export default function SignInPage() {
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 via-amber-400 to-orange-500 flex items-center justify-center shadow-xl shadow-pink-500/30">
                 <span className="text-white font-black text-2xl">🌊</span>
               </div>
-              <span className="text-5xl font-black bg-gradient-to-r from-pink-500 via-amber-400 to-orange-500 bg-clip-text text-transparent tracking-tight">
+              <span className="text-3xl sm:text-4xl md:text-5xl font-black bg-gradient-to-r from-pink-500 via-amber-400 to-orange-500 bg-clip-text text-transparent tracking-tight">
                 RoyalWavs
               </span>
             </div>
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
               Welcome to Paradise
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-base sm:text-lg text-gray-600">
               Sign in to invest in the future of music
             </p>
           </div>
 
           {/* Sign In Card */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8 relative overflow-hidden">
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-6 sm:p-8 relative overflow-hidden">
             {/* Card Background Animation */}
             <div className="absolute inset-0 bg-gradient-to-br from-pink-100/50 via-white/50 to-amber-100/50 animate-pulse opacity-50"></div>
             
