@@ -107,29 +107,6 @@ export default function SettingsPage() {
             </button>
           </div>
         </div>
-
-        {/* User Profile */}
-        <div className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-xl p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Profile</h2>
-          
-          <div className="flex items-center space-x-4">
-            {session.user?.image && (
-              <img 
-                src={session.user.image} 
-                alt="Profile" 
-                className="w-12 h-12 rounded-full"
-              />
-            )}
-            <div>
-              <div className="font-bold text-white">
-                {session.user?.name}
-              </div>
-              <div className="text-white/70 text-sm">
-                {session.user?.email}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   )
