@@ -26,7 +26,7 @@ export function SongCard({ song }: SongCardProps) {
   const monthlyAPY = song.totalRoyaltyPool > 0 ? (song.monthlyRevenue / song.totalRoyaltyPool) * 100 : 0
 
   return (
-    <Link href={`/song/${song.id}`} className="group block">
+    <Link href={`/song/${song.id}`} className="group block cursor-pointer">
       <div className="bg-gradient-to-br from-slate-900/80 via-teal-900/60 to-slate-900/80 backdrop-blur-xl border border-amber-500/20 rounded-2xl overflow-hidden hover:border-amber-400/60 transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-amber-500/30 relative">
         
         {/* Golden corner accent */}

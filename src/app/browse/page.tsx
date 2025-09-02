@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSession } from "next-auth/react"
 import { SongCard } from "@/components/SongCard"
 
 type Song = {
@@ -17,6 +18,7 @@ type Song = {
 }
 
 export default function BrowsePage() {
+  const { data: session } = useSession()
   const [songs, setSongs] = useState<Song[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
@@ -157,20 +159,36 @@ export default function BrowsePage() {
                   Join thousands of music investors supporting the next generation of artists
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button
-                    onClick={() => window.location.href = '/api/auth/signin'}
-                    className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 hover:from-amber-600 hover:via-orange-600 hover:to-pink-600 text-white rounded-2xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-                    <div className="relative flex items-center justify-center space-x-2 sm:space-x-3">
-                      <span className="text-xl sm:text-2xl group-hover:animate-bounce">💎</span>
-                      <span>Start Investing</span>
-                      <span className="text-xl sm:text-2xl group-hover:animate-bounce" style={{ animationDelay: '0.2s' }}>✨</span>
-                    </div>
-                  </button>
+                  {session ? (
+                    /* User is signed in - Show "Learn How to Earn" button */
+                    <button
+                      onClick={() => window.location.href = '/learn'}
+                      className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 hover:from-amber-600 hover:via-orange-600 hover:to-pink-600 text-white rounded-2xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden cursor-pointer"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                      <div className="relative flex items-center justify-center space-x-2 sm:space-x-3">
+                        <span className="text-xl sm:text-2xl group-hover:animate-bounce">📚</span>
+                        <span>How to Earn</span>
+                        <span className="text-xl sm:text-2xl group-hover:animate-bounce" style={{ animationDelay: '0.2s' }}>💰</span>
+                      </div>
+                    </button>
+                  ) : (
+                    /* User is not signed in - Show "Start Investing" button */
+                    <button
+                      onClick={() => window.location.href = '/api/auth/signin'}
+                      className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-pink-500 hover:from-amber-600 hover:via-orange-600 hover:to-pink-600 text-white rounded-2xl font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden cursor-pointer"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+                      <div className="relative flex items-center justify-center space-x-2 sm:space-x-3">
+                        <span className="text-xl sm:text-2xl group-hover:animate-bounce">💎</span>
+                        <span>Start Investing</span>
+                        <span className="text-xl sm:text-2xl group-hover:animate-bounce" style={{ animationDelay: '0.2s' }}>✨</span>
+                      </div>
+                    </button>
+                  )}
                   <button
                     onClick={() => window.location.href = '/upload'}
-                    className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-600/20 via-teal-600/20 to-green-600/20 hover:from-emerald-600/40 hover:via-teal-600/40 hover:to-green-600/40 backdrop-blur-xl border-2 border-emerald-400/40 hover:border-emerald-300/60 text-white rounded-2xl font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2 sm:space-x-3"
+                    className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-emerald-600/20 via-teal-600/20 to-green-600/20 hover:from-emerald-600/40 hover:via-teal-600/40 hover:to-green-600/40 backdrop-blur-xl border-2 border-emerald-400/40 hover:border-emerald-300/60 text-white rounded-2xl font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 flex items-center justify-center space-x-2 sm:space-x-3 cursor-pointer"
                   >
                     <span className="text-xl sm:text-2xl group-hover:animate-bounce">🎤</span>
                     <span>Upload Music</span>

@@ -92,7 +92,7 @@ export default function HomePage() {
                 <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 rounded-2xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
                 <button 
                   onClick={() => window.location.href = '/browse'}
-                  className="relative px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 text-white font-bold text-xl rounded-2xl leading-none flex items-center space-x-3 hover:scale-105 transition-all duration-300">
+                  className="relative px-8 py-4 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 text-white font-bold text-xl rounded-2xl leading-none flex items-center space-x-3 hover:scale-105 transition-all duration-300 cursor-pointer">
                   <span className="text-2xl">💎</span>
                   <span>Browse Songs</span>
                   <span className="text-2xl">🎵</span>
@@ -102,7 +102,7 @@ export default function HomePage() {
               {/* Upload Music Button - Secondary */}
               <button 
                 onClick={() => window.location.href = '/upload'}
-                className="group px-8 py-4 bg-gradient-to-r from-emerald-600/20 via-teal-600/20 to-green-600/20 hover:from-emerald-600/40 hover:via-teal-600/40 hover:to-green-600/40 backdrop-blur-xl border-2 border-emerald-400/40 hover:border-emerald-300/60 text-white rounded-2xl font-bold text-xl transition-all duration-300 hover:scale-105 flex items-center space-x-3"
+                className="group px-8 py-4 bg-gradient-to-r from-emerald-600/20 via-teal-600/20 to-green-600/20 hover:from-emerald-600/40 hover:via-teal-600/40 hover:to-green-600/40 backdrop-blur-xl border-2 border-emerald-400/40 hover:border-emerald-300/60 text-white rounded-2xl font-bold text-xl transition-all duration-300 hover:scale-105 flex items-center space-x-3 cursor-pointer"
               >
                 <span className="text-2xl group-hover:animate-bounce">🎤</span>
                 <span>Upload Music</span>
@@ -113,7 +113,7 @@ export default function HomePage() {
             {/* Demo Link */}
             <button 
               onClick={handleHeroClick}
-              className="text-amber-300/80 hover:text-amber-300 transition-colors text-sm font-medium underline underline-offset-4"
+              className="text-amber-300/80 hover:text-amber-300 transition-colors text-sm font-medium underline underline-offset-4 cursor-pointer"
             >
               Or watch how it works with Sisy's story →
             </button>
@@ -141,7 +141,7 @@ export default function HomePage() {
               <button
                 onClick={handleWatchJourney}
                 disabled={buttonPoofing}
-                className={`group relative px-6 sm:px-8 md:px-12 py-4 sm:py-5 md:py-6 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-600 text-white rounded-3xl font-black text-lg sm:text-xl md:text-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 overflow-hidden ${buttonPoofing ? 'animate-smoke-poof' : ''}`}
+                className={`group relative px-6 sm:px-8 md:px-12 py-4 sm:py-5 md:py-6 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-600 hover:via-purple-600 hover:to-cyan-600 text-white rounded-3xl font-black text-lg sm:text-xl md:text-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 overflow-hidden cursor-pointer ${buttonPoofing ? 'animate-smoke-poof' : ''}`}
               >
                 {/* Removed shimmer - no color flashing */}
                 

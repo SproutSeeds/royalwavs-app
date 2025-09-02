@@ -66,18 +66,18 @@ export function Navigation() {
           {/* Center - Navigation Links on Desktop */}
           <div className="hidden md:flex flex-1 justify-center">
             <div className="flex items-center space-x-8 lg:space-x-12">
-              <Link href="/" className="text-white/90 hover:text-amber-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
+              <Link href="/" className="text-white/90 hover:text-amber-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl cursor-pointer">
                 Home
               </Link>
-              <Link href="/browse" className="text-white/90 hover:text-purple-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
+              <Link href="/browse" className="text-white/90 hover:text-purple-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl cursor-pointer">
                 Browse
               </Link>
               {session && (
                 <>
-                  <Link href="/dashboard" className="text-white/90 hover:text-cyan-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
+                  <Link href="/dashboard" className="text-white/90 hover:text-cyan-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl cursor-pointer">
                     Portfolio
                   </Link>
-                  <Link href="/upload" className="text-white/90 hover:text-emerald-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl">
+                  <Link href="/upload" className="text-white/90 hover:text-emerald-300 transition-all duration-300 font-medium tracking-wide hover:scale-105 text-lg lg:text-xl cursor-pointer">
                     Create
                   </Link>
                 </>
@@ -85,8 +85,21 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Right Side - Profile locked to right */}
-          <div className="w-64 flex justify-end">
+          {/* Right Side - Learn Link + Profile */}
+          <div className="w-64 flex items-center justify-end space-x-4">
+            
+            {/* Subtle Learn Link - styled like RoyalWavs */}
+            <div className="hidden lg:block">
+              <Link 
+                href="/learn" 
+                className="group flex items-center cursor-pointer"
+              >
+                <span className="text-lg font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight hover:drop-shadow-lg transition-all duration-500 hover:scale-105">
+                  How to Earn
+                </span>
+              </Link>
+            </div>
+
             {status === "loading" ? (
               <div className="w-24 h-10 bg-gradient-to-r from-amber-500/20 to-cyan-500/20 rounded-xl animate-pulse" />
             ) : session ? (
@@ -258,30 +271,41 @@ export function Navigation() {
             <Link 
               href="/" 
               onClick={() => setMobileMenuOpen(false)}
-              className="block py-3 px-4 text-white/90 hover:text-amber-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+              className="block py-3 px-4 text-white/90 hover:text-amber-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium cursor-pointer"
             >
               🏝️ Home
             </Link>
             <Link 
               href="/browse" 
               onClick={() => setMobileMenuOpen(false)}
-              className="block py-3 px-4 text-white/90 hover:text-purple-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+              className="block py-3 px-4 text-white/90 hover:text-purple-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium cursor-pointer"
             >
               🎵 Browse Songs
+            </Link>
+            
+            {/* Subtle Learn Link for Mobile */}
+            <Link 
+              href="/learn" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-3 px-4 text-white/90 hover:text-amber-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium cursor-pointer"
+            >
+              <span className="bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent font-black">
+                📚 How to Earn
+              </span>
             </Link>
             {session && (
               <>
                 <Link 
                   href="/dashboard" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-3 px-4 text-white/90 hover:text-cyan-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+                  className="block py-3 px-4 text-white/90 hover:text-cyan-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium cursor-pointer"
                 >
                   🎵 Portfolio
                 </Link>
                 <Link 
                   href="/upload" 
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block py-3 px-4 text-white/90 hover:text-emerald-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium"
+                  className="block py-3 px-4 text-white/90 hover:text-emerald-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium cursor-pointer"
                 >
                   🎤 Create
                 </Link>
