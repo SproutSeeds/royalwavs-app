@@ -63,12 +63,12 @@ export default function HomePage() {
           <div className="absolute left-2/3 top-2/5 w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse opacity-50"></div>
           
           <div className="relative z-10">
-            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-8 leading-tight">
-              <span className="bg-gradient-to-r from-amber-300 via-orange-400 to-amber-500 bg-clip-text text-transparent text-shimmer">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-8 leading-tight cursor-default">
+              <span className="bg-gradient-to-r from-amber-300 via-orange-400 to-amber-500 bg-clip-text text-transparent text-shimmer cursor-default">
                 Build Artists
               </span>
               <br />
-              <span className="text-white text-sparkle">
+              <span className="text-white text-sparkle cursor-default">
                 Share Success
               </span>
             </h1>

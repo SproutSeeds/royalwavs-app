@@ -94,7 +94,7 @@ export function Navigation() {
                 href="/learn" 
                 className="group flex items-center cursor-pointer"
               >
-                <span className="text-lg font-black bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent tracking-tight hover:drop-shadow-lg transition-all duration-500 hover:scale-105">
+                <span className="text-lg font-black tracking-tight hover:drop-shadow-lg transition-all duration-500 hover:scale-105" style={{ color: '#fbbf24' }}>
                   How to Earn
                 </span>
               </Link>
@@ -289,7 +289,7 @@ export function Navigation() {
               onClick={() => setMobileMenuOpen(false)}
               className="block py-3 px-4 text-white/90 hover:text-amber-300 hover:bg-white/10 rounded-lg transition-all duration-300 font-medium cursor-pointer"
             >
-              <span className="bg-gradient-to-r from-amber-400 via-orange-300 to-amber-500 bg-clip-text text-transparent font-black">
+              <span className="font-black" style={{ color: '#fbbf24' }}>
                 📚 How to Earn
               </span>
             </Link>

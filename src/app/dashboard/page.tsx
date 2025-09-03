@@ -249,8 +249,8 @@ export default function Dashboard() {
                 Discover rising artists and buy royalty shares in their future success
               </p>
               <Link
-                href="/"
-                className="inline-block px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
+                href="/browse"
+                className="inline-block px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-xl hover:scale-105 cursor-pointer"
               >
                 Browse Songs to Invest
               </Link>
